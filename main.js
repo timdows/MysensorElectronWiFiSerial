@@ -28,6 +28,7 @@ app.on('ready', function () {
       protocol: 'file:',
       slashes: true
     }));
+    //win.webContents.openDevTools();
   } else {
     win.loadURL(process.env.HOST);
     //win.webContents.openDevTools();
