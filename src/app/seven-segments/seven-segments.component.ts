@@ -3,11 +3,11 @@ import { Http } from '@angular/http';
 import { Observable, Subscription  } from 'rxjs/Rx';
 
 @Component({
-	selector: 'app-pihole-stats',
-	templateUrl: './pihole-stats.component.pug',
-	styleUrls: ['./pihole-stats.component.scss']
+	selector: 'app-seven-segments',
+	templateUrl: './seven-segments.component.pug',
+	styleUrls: ['./seven-segments.component.scss']
 })
-export class PiholeStatsComponent implements OnInit, OnDestroy {
+export class SevenSegmentsComponent implements OnInit {
 	ticks = 0;
 	stats = {};
 	
@@ -17,9 +17,8 @@ export class PiholeStatsComponent implements OnInit, OnDestroy {
 	constructor(private http: Http) { }
 
 	ngOnInit() {
-		this.timer = Observable.timer(2000,5000);
+		this.timer = Observable.timer(0,10000);
 		this.sub = this.timer.subscribe(t => this.timerTicks(t));
-		this.getSummary();
 	}
 
 	ngOnDestroy(){
@@ -28,13 +27,14 @@ export class PiholeStatsComponent implements OnInit, OnDestroy {
 
 	private timerTicks(tick){
 		this.ticks = tick;
-		this.getSummary();
+		this.getStats();
 	}
 
-	private getSummary(){
-		this.http.get("http://10.0.0.8/admin/api.php?summary")
+	private getStats(){
+		this.http.get("http://10.0.0.5/api/vera/sevensegment")
 			.subscribe(data => {
 				this.stats = data.json();
 			});
 	}
+
 }

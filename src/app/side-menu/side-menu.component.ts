@@ -14,7 +14,6 @@ export class SideMenuComponent implements OnInit {
 	}
 
 	changeRoute(type: string){
-		console.log("change route type", type);
 		this.router.navigate(["/" + type]);
 	}
 
