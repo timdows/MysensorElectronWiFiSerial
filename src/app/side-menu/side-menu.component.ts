@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 @Component({
 	selector: 'app-side-menu',
 	templateUrl: './side-menu.component.pug',
-	styleUrls: ['./side-menu.component.css']
+	styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent implements OnInit {
 
@@ -14,7 +14,6 @@ export class SideMenuComponent implements OnInit {
 	}
 
 	changeRoute(type: string){
-		console.log("change route type", type);
 		this.router.navigate(["/" + type]);
 	}
 

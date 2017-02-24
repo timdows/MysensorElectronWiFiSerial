@@ -11,11 +11,13 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
 import { GatewaySerialComponent } from './gateway-serial/gateway-serial.component';
 import { Nrf24SnifferComponent } from './nrf24-sniffer/nrf24-sniffer.component';
 import { PiholeStatsComponent } from './pihole-stats/pihole-stats.component';
+import { SevenSegmentsComponent } from './seven-segments/seven-segments.component';
 
 const appRoutes: Routes = [
 	{ path: 'gateway-serial', component: GatewaySerialComponent },
 	{ path: 'nrf24-sniffer', component: Nrf24SnifferComponent },
 	{ path: 'pihole-stats', component: PiholeStatsComponent },
+	{ path: 'seven-segments', component: SevenSegmentsComponent },
 	{ path: '',
 		redirectTo: '/gateway-serial',
 		pathMatch: 'full'
@@ -29,7 +31,8 @@ const appRoutes: Routes = [
 		SideMenuComponent,
 		GatewaySerialComponent,
 		Nrf24SnifferComponent,
-		PiholeStatsComponent
+		PiholeStatsComponent,
+		SevenSegmentsComponent
 	],
 	imports: [
 		RouterModule.forRoot(appRoutes),
