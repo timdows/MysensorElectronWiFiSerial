@@ -10,7 +10,7 @@ let win = null;
 app.on('ready', function () {
 
   // Initialize the window to our specified dimensions
-  win = new BrowserWindow({width: 1000, height: 600});
+  win = new BrowserWindow({width: 800, height: 460});
 
   // Specify entry point
   if (process.env.PACKAGE === 'true'){
@@ -19,6 +19,7 @@ app.on('ready', function () {
       protocol: 'file:',
       slashes: true
     }));
+    //win.webContents.openDevTools();
   } else {
     win.loadURL(process.env.HOST);
     win.webContents.openDevTools();
