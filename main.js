@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path');
 const url = require('url');
+const pug = require('electron-pug')({pretty:true});
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -10,7 +11,15 @@ let win = null;
 app.on('ready', function () {
 
   // Initialize the window to our specified dimensions
-  win = new BrowserWindow({width: 1000, height: 600});
+  win = new BrowserWindow(
+    {
+      width: 800, 
+      height: 480,
+      resizable: false,
+      maximizable: false,
+      fullscreenable: false,
+      //frame: false
+    });
 
   // Specify entry point
   if (process.env.PACKAGE === 'true'){
@@ -21,7 +30,7 @@ app.on('ready', function () {
     }));
   } else {
     win.loadURL(process.env.HOST);
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
   }
 
   // Remove window once app is closed
