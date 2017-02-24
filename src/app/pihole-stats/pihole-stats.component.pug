@@ -1,0 +1,19 @@
+.ui-g-12.ui-g-nopad
+	h4 PiHole stats
+.ui-g-12.ui-g-nopad
+	.ui-g-3.ui-g-nopad
+		.box.bg-aqua
+			h2 {{stats.ads_blocked_today}}
+			p DNS Queries Blocked Today
+	.ui-g-3.ui-g-nopad
+		.box.bg-green
+			h2 {{stats.dns_queries_today}}
+			p DNS Queries Today
+	.ui-g-3.ui-g-nopad
+		.box.bg-yellow
+			h2 {{stats.ads_percentage_today}} %
+			p Of Today's Queries Were Blocked
+	.ui-g-3.ui-g-nopad
+		.box.bg-red
+			h2 {{stats.domains_being_blocked}}
+			p Domains Being Blocked
