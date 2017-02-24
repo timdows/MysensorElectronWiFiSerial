@@ -1,7 +1,6 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path');
 const url = require('url');
-const pug = require('electron-pug')({pretty:true});
 
 require('electron-reload')(__dirname);
 require('dotenv').config();

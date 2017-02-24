@@ -39,7 +39,6 @@
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
     "codelyzer": "~2.0.0-beta.1",
-    "electron": "^1.4.15",
     "electron-prebuilt": "^1.4.13",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
