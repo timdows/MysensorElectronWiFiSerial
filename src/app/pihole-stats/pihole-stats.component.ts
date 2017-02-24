@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 @Component({
 	selector: 'app-pihole-stats',
 	templateUrl: './pihole-stats.component.pug',
-	styleUrls: ['./pihole-stats.component.css']
+	styleUrls: ['./pihole-stats.component.scss']
 })
 export class PiholeStatsComponent implements OnInit {
 
