@@ -14,10 +14,7 @@ app.on('ready', function () {
     {
       width: 800, 
       height: 480,
-      resizable: false,
-      maximizable: false,
-      fullscreenable: false,
-      //frame: false
+      fullscreen: true
     });
 
   // Specify entry point
