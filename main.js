@@ -14,7 +14,8 @@ app.on('ready', function () {
     {
       width: 800, 
       height: 480,
-      fullscreen: true
+      fullscreen: true,
+      frame: false
     });
 
   // Specify entry point
@@ -27,7 +28,7 @@ app.on('ready', function () {
     //win.webContents.openDevTools();
   } else {
     win.loadURL(process.env.HOST);
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
   }
 
   // Remove window once app is closed
