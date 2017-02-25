@@ -17,7 +17,7 @@ app.on('ready', function () {
       resizable: false,
       maximizable: false,
       fullscreenable: false,
-      //frame: false
+      frame: false
     });
 
   // Specify entry point
@@ -30,7 +30,7 @@ app.on('ready', function () {
     //win.webContents.openDevTools();
   } else {
     win.loadURL(process.env.HOST);
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
   }
 
   // Remove window once app is closed

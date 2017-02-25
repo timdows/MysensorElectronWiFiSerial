@@ -1,0 +1,10 @@
+.ui-g {
+	height: 100%;
+	position: relative;
+
+	&:after{
+		content: '';
+		clear: both;
+		display: block;
+	}
+}
