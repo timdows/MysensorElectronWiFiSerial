@@ -6,7 +6,7 @@ aside
 		button(pButton="", type="button", (click)="changeRoute('pihole-stats')", label="PiHole", icon="fa-globe")
 		button(pButton="", type="button", (click)="changeRoute('seven-segments')", label="Seven segments", icon="fa-braille")
 	.container(*ngIf="!isOpenAside")
-		button(pButton="", type="button", (click)="toggleAside()",icon="fa-close")
+		button(pButton="", type="button", (click)="toggleAside()",icon="fa-bars")
 		button(pButton="", type="button", (click)="changeRoute('gateway-serial')", icon="fa-microchip")
 		button(pButton="", type="button", (click)="changeRoute('nrf24-sniffer')", icon="fa-search")
 		button(pButton="", type="button", (click)="changeRoute('pihole-stats')", icon="fa-globe")
