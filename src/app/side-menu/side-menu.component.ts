@@ -1,6 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DOCUMENT } from '@angular/platform-browser';
+
+import { IpcService } from '../ipc.service';
+import { EnvironmentService } from '../environment.service';
+
 
 @Component({
 	selector: 'app-side-menu',
@@ -10,9 +13,16 @@ import { DOCUMENT } from '@angular/platform-browser';
 export class SideMenuComponent implements OnInit {
 	isOpenAside = true;
 
-	constructor(@Inject(DOCUMENT) private document: any, private router: Router) { }
+	constructor(
+		private ipcService: IpcService,
+		private environmentService: EnvironmentService, 
+		private router: Router) { }
 
 	ngOnInit() {
+		setTimeout(() => {
+			this.ipcService.subscribeToEvent("set-os-content", this, this.handleSetOsContent);
+			this.ipcService.getOsContent();
+		}, 0);
 	}
 
 	changeRoute(type: string){
@@ -20,13 +30,21 @@ export class SideMenuComponent implements OnInit {
 	}
 
 	toggleAside(){
-		this.isOpenAside = !this.isOpenAside;
+		if (this.isOpenAside) {
+			this.environmentService.removeClassOnHtml("aside-open");
+		}
+		else {
+			this.environmentService.addClassOnHtml("aside-open");
+		}
 
-		if(this.document.querySelector('html').classList.contains("aside-open")){
-			this.document.querySelector('html').classList.remove("aside-open");
-		}
-		else{
-			this.document.querySelector('html').classList.add("aside-open");
-		}
+		this.isOpenAside = !this.isOpenAside;
+	}
+
+	handleSetOsCpuStats(stats: any) {
+		console.log("handleSetOsCpuStats", stats);
+	}
+
+	handleSetOsContent(stats: any) {
+		console.log("handleSetOsContent", stats);
 	}
 }
