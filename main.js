@@ -3,6 +3,7 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const os = require('os');
+const username = require('username');
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -79,7 +80,8 @@ ipcMain.on("get-os-content", (event, arg) => {
 		totalmem: os.totalmem(),
 		freemem: os.freemem(),
 		cpus: os.cpus(),
-		networkInterfaces: os.networkInterfaces()
+		networkInterfaces: os.networkInterfaces(),
+		username: username.sync()
 	};
 
 	win.webContents.send("set-os-content", content);
