@@ -9,18 +9,20 @@ export class IpcService {
 
 	subscribeToEvent(name: string, thisArg: any, fn: any){
 		electron.ipcRenderer.on(name, (event, arg) => {
-			console.log(name, arg);
 			return fn.call(thisArg, arg);
 		});
 	}
 
+	removeAllListeners(name: string) {
+		electron.ipcRenderer.removeAllListeners(name);
+	}
+
 	getRaspicamStats() {
-		electron.ipcRenderer.send("get-raspicam-stats", "s");
+		electron.ipcRenderer.send("get-raspicam-stats");
 	}
 
 	getOsCpuStats() {
-		console.log("Angular getOsCpuStats");
-		electron.ipcRenderer.send("get-os-cpu-stats", "s");
+		electron.ipcRenderer.send("get-os-cpu-stats");
 	}
 
 	getOsContent() {

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { IpcService } from '../ipc.service';
-
-declare var electron: any;
+import { Observable, Subscription  } from 'rxjs/Rx';
 
 @Component({
 	selector: 'app-raspicam-stats',
@@ -10,7 +9,11 @@ declare var electron: any;
 })
 export class RaspicamStatsComponent implements OnInit, OnDestroy {
 
+	ticks = 0;
 	stats = {};
+	
+	private timer;
+	private sub: Subscription;
 
 	constructor(
 		private changeDetectorRef: ChangeDetectorRef,
@@ -18,17 +21,29 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
+		this.timer = Observable.timer(0,5000);
+		this.sub = this.timer.subscribe(t => this.timerTicks(t));
+
 		this.ipcService.subscribeToEvent("set-raspicam-stats", this, this.handleSetRaspicamStats);
-		this.ipcService.getRaspicamStats();
 	}
 
 	ngOnDestroy(){
+		this.sub.unsubscribe();
 		this.changeDetectorRef.detach();
-		electron.ipcRenderer.removeAllListeners("set-raspicam-stats");
+		this.ipcService.removeAllListeners("set-raspicam-stats");
 	}
 
 	handleSetRaspicamStats(stats: any) {
 		this.stats = stats;
 		this.changeDetectorRef.detectChanges();
+	}
+
+	private timerTicks(tick){
+		this.ticks = tick;
+		this.getStats();
+	}
+
+	private getStats(){
+		this.ipcService.getRaspicamStats();
 	}
 }
