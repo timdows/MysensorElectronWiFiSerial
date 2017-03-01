@@ -6,6 +6,9 @@ import { HttpModule } from '@angular/http';
 
 import { ButtonModule } from 'primeng/primeng';
 
+import { IpcService } from './ipc.service';
+import { EnvironmentService } from './environment.service';
+
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { GatewaySerialComponent } from './gateway-serial/gateway-serial.component';
@@ -44,7 +47,10 @@ const appRoutes: Routes = [
 		HttpModule,
 		ButtonModule
 	],
-	providers: [],
+	providers: [
+		IpcService,
+		EnvironmentService
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
