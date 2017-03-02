@@ -12,6 +12,8 @@ import { EnvironmentService } from '../environment.service';
 	styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent implements OnInit {
+
+	info = {};
 	isOpenAside = true;
 
 	constructor(
@@ -48,7 +50,8 @@ export class SideMenuComponent implements OnInit {
 		console.log("handleSetOsCpuStats", stats);
 	}
 
-	handleSetOsContent(stats: any) {
-		console.log("handleSetOsContent", stats);
+	handleSetOsContent(info: any) {
+		this.info = info;
+		this.environmentService.detectChanges();
 	}
 }

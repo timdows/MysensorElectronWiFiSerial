@@ -1,4 +1,7 @@
 aside
+	.info
+		span username: {{info.username}}
+		span hostname: {{info.hostname}}
 	.container(*ngIf="isOpenAside")
 		button(pButton="", type="button", (click)="toggleAside()", label="Close", icon="fa-close")
 		button(pButton="", type="button", (click)="changeRoute('gateway-serial')", label="Gateway", icon="fa-microchip")

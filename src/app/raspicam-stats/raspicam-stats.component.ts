@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IpcService } from '../ipc.service';
 
-declare var electron: any;
+import { EnvironmentService } from '../environment.service';
 
 @Component({
 	selector: 'app-raspicam-stats',
@@ -13,7 +13,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 	stats = {};
 
 	constructor(
-		private changeDetectorRef: ChangeDetectorRef,
+		private environmentService: EnvironmentService,
 		private ipcService: IpcService
 	) { }
 
@@ -23,12 +23,14 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(){
-		this.changeDetectorRef.detach();
-		electron.ipcRenderer.removeAllListeners("set-raspicam-stats");
+		// TODO[TT] find out if needed
+		//this.changeDetectorRef.detach();
+		//electron.ipcRenderer.removeAllListeners("set-raspicam-stats");
+		this.ipcService.removeAllListeners("set-raspicam-stats");
 	}
 
 	handleSetRaspicamStats(stats: any) {
 		this.stats = stats;
-		this.changeDetectorRef.detectChanges();
+		this.environmentService.detectChanges();
 	}
 }

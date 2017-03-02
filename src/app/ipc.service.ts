@@ -14,6 +14,10 @@ export class IpcService {
 		});
 	}
 
+	removeAllListeners(name: string) {
+		electron.ipcRenderer.removeAllListeners(name);
+	}
+
 	getRaspicamStats() {
 		electron.ipcRenderer.send("get-raspicam-stats", "s");
 	}
