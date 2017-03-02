@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { IpcService } from '../ipc.service';
 import { EnvironmentService } from '../environment.service';
 import { Observable, Subscription  } from 'rxjs/Rx';
@@ -18,6 +18,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private environmentService: EnvironmentService,
+		private changeDetectorRef: ChangeDetectorRef,
 		private ipcService: IpcService
 	) { }
 
@@ -35,7 +36,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 
 	handleSetRaspicamStats(stats: any) {
 		this.stats = stats;
-		this.environmentService.detectChanges();
+		this.changeDetectorRef.detectChanges();
 	}
 
 	private timerTicks(tick){

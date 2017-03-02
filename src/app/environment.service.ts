@@ -6,10 +6,7 @@ export class EnvironmentService {
 
 	private html = this.document.querySelector("html") as any;
 
-	constructor(
-		@Inject(DOCUMENT) private document: Document,
-		//private changeDetectorRef: ChangeDetectorRef
-	) { }
+	constructor(@Inject(DOCUMENT) private document: Document) { }
 
 	addClassOnHtml(className: string) {
 		if (!this.html.classList.contains(className)) {
@@ -21,9 +18,5 @@ export class EnvironmentService {
 		if (this.html.classList.contains(className)) {
 			this.html.classList.remove(className);
 		}
-	}
-
-	detectChanges() {
-		//this.changeDetectorRef.detectChanges();
 	}
 }

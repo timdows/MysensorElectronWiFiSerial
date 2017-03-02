@@ -21,10 +21,6 @@ export class IpcService {
 		electron.ipcRenderer.send("get-raspicam-stats");
 	}
 
-	getOsCpuStats() {
-		electron.ipcRenderer.send("get-os-cpu-stats");
-	}
-
 	getOsContent() {
 		electron.ipcRenderer.send("get-os-content");
 	}

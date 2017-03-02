@@ -1,7 +1,14 @@
 aside
 	.info
-		span username: {{info.username}}
-		span hostname: {{info.hostname}}
+		.block
+			span user
+			span {{info.username}}
+		.block
+			span host
+			span {{info.hostname}}
+		.block(*ngFor="let ipAddress of ipAddressInfo")
+			span {{ipAddress.name}}
+			span {{ipAddress.address}}
 	.container(*ngIf="isOpenAside")
 		button(pButton="", type="button", (click)="toggleAside()", label="Close", icon="fa-close")
 		button(pButton="", type="button", (click)="changeRoute('gateway-serial')", label="Gateway", icon="fa-microchip")
