@@ -17,9 +17,8 @@ export class PiholeStatsComponent implements OnInit, OnDestroy {
 	constructor(private http: Http) { }
 
 	ngOnInit() {
-		this.timer = Observable.timer(2000,5000);
+		this.timer = Observable.timer(0,5000);
 		this.sub = this.timer.subscribe(t => this.timerTicks(t));
-		this.getSummary();
 	}
 
 	ngOnDestroy(){

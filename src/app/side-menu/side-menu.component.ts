@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { IpcService } from '../ipc.service';
 import { EnvironmentService } from '../environment.service';
 
-//declare var electron: any;
 
 @Component({
 	selector: 'app-side-menu',
@@ -23,9 +22,6 @@ export class SideMenuComponent implements OnInit {
 
 	ngOnInit() {
 		setTimeout(() => {
-			//this.ipcService.subscribeToEvent("set-os-cpu-stats", this, this.handleSetOsCpuStats);
-			//this.ipcService.getOsCpuStats();
-
 			this.ipcService.subscribeToEvent("set-os-content", this, this.handleSetOsContent);
 			this.ipcService.getOsContent();
 		}, 0);

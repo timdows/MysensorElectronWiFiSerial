@@ -4,6 +4,7 @@ const url = require('url');
 const fs = require('fs');
 const os = require('os');
 const username = require('username');
+const https = require('https');
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -56,16 +57,24 @@ app.on('ready', function () {
 });
 
 ipcMain.on("get-raspicam-stats", (event, arg) => {
-	console.log("get-raspicam-stats", arg);
-	var files = [];
-	fs.readdir(".", (err, files) => {
-		files.forEach(file => {
-			files.push(file);
+	console.log("get-raspicam-stats");
+	https.get({
+		host: '10.0.0.27',
+		port: 3000,
+		path: '/api?action=loadStatus',
+		auth: 'timelapse:timelapse',
+		rejectUnauthorized: false
+	}, function (response) {
+		var data = '';
+		response.on('data', function(d) {
+			data += d;
 		});
-		console.log("files", files);
-		//event.sender.send("set-raspicam-stats", files);
-		win.webContents.send("set-raspicam-stats", files);
-	})
+		response.on('end', function() {
+			var json = JSON.parse(data);
+			console.log("get-raspicam-stats", json);
+			win.webContents.send("set-raspicam-stats", json);
+		});
+	});
 });
 
 ipcMain.on("get-os-content", (event, arg) => {
