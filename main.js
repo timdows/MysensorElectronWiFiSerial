@@ -57,6 +57,7 @@ app.on('ready', function () {
 
 ipcMain.on("get-raspicam-stats", (event, arg) => {
 	console.log("get-raspicam-stats");
+
 	https.get({
 		host: '10.0.0.27',
 		port: 3000,
@@ -65,13 +66,19 @@ ipcMain.on("get-raspicam-stats", (event, arg) => {
 		rejectUnauthorized: false
 	}, function (response) {
 		var data = '';
+		
 		response.on('data', function(d) {
 			data += d;
 		});
+		
 		response.on('end', function() {
 			var json = JSON.parse(data);
 			console.log("get-raspicam-stats", json);
 			win.webContents.send("set-raspicam-stats", json);
+		});
+
+		response.on('error', function(err){
+			console.log("get-raspicam-stats error: " + err.message);
 		});
 	});
 });
@@ -125,3 +132,7 @@ app.on('window-all-closed', function () {
 		app.quit();
 	}
 });
+
+process.on('uncaughtException', function (err) {
+	console.log("uncaughtException", err);
+}); 

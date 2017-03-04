@@ -16,6 +16,7 @@ import { Nrf24SnifferComponent } from './nrf24-sniffer/nrf24-sniffer.component';
 import { PiholeStatsComponent } from './pihole-stats/pihole-stats.component';
 import { SevenSegmentsComponent } from './seven-segments/seven-segments.component';
 import { RaspicamStatsComponent } from './raspicam-stats/raspicam-stats.component';
+import { HeatingStatsComponent } from './heating-stats/heating-stats.component';
 
 const appRoutes: Routes = [
 	{ path: 'gateway-serial', component: GatewaySerialComponent },
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
 	{ path: 'pihole-stats', component: PiholeStatsComponent },
 	{ path: 'seven-segments', component: SevenSegmentsComponent },
 	{ path: 'raspicam-stats', component: RaspicamStatsComponent },
+	{ path: 'heating-stats', component: HeatingStatsComponent },
 	{ path: '',
 		redirectTo: '/gateway-serial',
 		pathMatch: 'full'
@@ -38,7 +40,8 @@ const appRoutes: Routes = [
 		Nrf24SnifferComponent,
 		PiholeStatsComponent,
 		SevenSegmentsComponent,
-		RaspicamStatsComponent
+		RaspicamStatsComponent,
+		HeatingStatsComponent
 	],
 	imports: [
 		RouterModule.forRoot(appRoutes),

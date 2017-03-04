@@ -6,6 +6,7 @@ aside
 		button(pButton="", type="button", (click)="changeRoute('pihole-stats')", label="PiHole", icon="fa-globe")
 		button(pButton="", type="button", (click)="changeRoute('seven-segments')", label="Seven segments", icon="fa-braille")
 		button(pButton="", type="button", (click)="changeRoute('raspicam-stats')", label="Raspicam", icon="fa-camera-retro")
+		button(pButton="", type="button", (click)="changeRoute('heating-stats')", label="Heating", icon="fa-thermometer-empty")
 	.container(*ngIf="!isOpenAside")
 		button(pButton="", type="button", (click)="toggleAside()",icon="fa-bars")
 		button(pButton="", type="button", (click)="changeRoute('gateway-serial')", icon="fa-microchip")
@@ -13,3 +14,4 @@ aside
 		button(pButton="", type="button", (click)="changeRoute('pihole-stats')", icon="fa-globe")
 		button(pButton="", type="button", (click)="changeRoute('seven-segments')", icon="fa-braille")
 		button(pButton="", type="button", (click)="changeRoute('raspicam-stats')", icon="fa-camera-retro")
+		button(pButton="", type="button", (click)="changeRoute('heating-stats')", icon="fa-thermometer-empty")

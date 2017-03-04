@@ -21,7 +21,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
-		this.timer = Observable.timer(0,5000);
+		this.timer = Observable.timer(0,20000);
 		this.sub = this.timer.subscribe(t => this.timerTicks(t));
 
 		this.ipcService.subscribeToEvent("set-raspicam-stats", this, this.handleSetRaspicamStats);
