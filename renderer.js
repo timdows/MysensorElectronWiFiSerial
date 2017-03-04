@@ -17,12 +17,12 @@ port.on('error', function(err) {
   console.log('Error: ', err.message);
 });
 
-var table = document.getElementById("data");
+//var table = document.getElementById("data");
 port.on('data', function (data) {
-//  console.log('Data: ' + data);
-  var row = table.insertRow(0);
-  var cell = row.insertCell(0);
-  cell.innerHTML = data;
+  console.log('Data: ' + data);
+  //var row = table.insertRow(0);
+  //var cell = row.insertCell(0);
+  //cell.innerHTML = data;
 });
 
 // serialport.list((err, ports) => {

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { IpcService } from '../ipc.service';
+import { EnvironmentService } from '../environment.service';
 import { Observable, Subscription  } from 'rxjs/Rx';
 
 @Component({
@@ -16,6 +17,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 	private sub: Subscription;
 
 	constructor(
+		private environmentService: EnvironmentService,
 		private changeDetectorRef: ChangeDetectorRef,
 		private ipcService: IpcService
 	) { }
@@ -29,7 +31,6 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(){
 		this.sub.unsubscribe();
-		this.changeDetectorRef.detach();
 		this.ipcService.removeAllListeners("set-raspicam-stats");
 	}
 

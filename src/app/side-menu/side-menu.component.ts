@@ -1,9 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { IpcService } from '../ipc.service';
 import { EnvironmentService } from '../environment.service';
-
 
 @Component({
 	selector: 'app-side-menu',
@@ -11,11 +10,15 @@ import { EnvironmentService } from '../environment.service';
 	styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent implements OnInit {
+
+	info = {};
+	ipAddressInfo = [];
 	isOpenAside = true;
 
 	constructor(
 		private ipcService: IpcService,
-		private environmentService: EnvironmentService, 
+		private environmentService: EnvironmentService,
+		private changeDetectorRef: ChangeDetectorRef,
 		private router: Router) { }
 
 	ngOnInit() {
@@ -40,11 +43,34 @@ export class SideMenuComponent implements OnInit {
 		this.isOpenAside = !this.isOpenAside;
 	}
 
-	handleSetOsCpuStats(stats: any) {
-		console.log("handleSetOsCpuStats", stats);
-	}
+	handleSetOsContent(info: any) {	
+		this.info = info;
+		this.ipAddressInfo = [];
+		console.log(info.networkInterfaces);
+		
+		Object.keys(info.networkInterfaces).forEach((ifname) => {
+			var alias = 0;
+			info.networkInterfaces[ifname].forEach((iface) => {
+				if ('IPv4' !== iface.family || iface.internal !== false) {
+					// skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+					return;
+				}
 
-	handleSetOsContent(stats: any) {
-		console.log("handleSetOsContent", stats);
+				if (alias >= 1) {
+					// this single interface has multiple ipv4 addresses
+					console.log("This single interface has multiple ipv4 addresses", ifname + ':' + alias, iface.address);
+				} else {
+					// this interface has only one ipv4 adress
+					console.log(ifname, iface.address);
+					this.ipAddressInfo.push({
+						name: ifname,
+						address: iface.address
+					});
+				}
+				++alias;
+			});
+		});
+
+		this.changeDetectorRef.detectChanges();
 	}
 }

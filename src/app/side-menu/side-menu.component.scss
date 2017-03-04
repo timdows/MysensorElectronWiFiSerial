@@ -7,7 +7,7 @@ aside {
 	width: 3rem;
 	transition: all .5s;
 
-	.container {
+	> .container {
 		padding: .2rem;
 
 		button {
@@ -16,8 +16,26 @@ aside {
 			min-height: 3rem;
 		}
 	}
+
+	> .info {
+		display: none;
+		padding: 1rem;
+		font-size: .8rem;
+
+		> .block{
+			display: flex;
+
+			> span {
+				flex: 0 1 50%;
+			}
+		}
+	}
 }
 
 /deep/ .aside-open aside {
 	width: 11rem;
+}
+
+/deep/ .aside-open aside .info {
+	display: block !important;
 }
