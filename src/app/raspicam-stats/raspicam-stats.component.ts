@@ -5,7 +5,7 @@ import { Observable, Subscription  } from 'rxjs/Rx';
 
 @Component({
 	selector: 'app-raspicam-stats',
-	templateUrl: './raspicam-stats.component.html',
+	templateUrl: './raspicam-stats.component.pug',
 	styleUrls: ['./raspicam-stats.component.scss']
 })
 export class RaspicamStatsComponent implements OnInit, OnDestroy {
