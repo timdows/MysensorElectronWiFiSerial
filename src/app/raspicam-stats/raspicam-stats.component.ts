@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Http } from '@angular/http';
 import { IpcService } from '../ipc.service';
 import { EnvironmentService } from '../environment.service';
 import { Observable, Subscription  } from 'rxjs/Rx';
@@ -11,15 +12,17 @@ import { Observable, Subscription  } from 'rxjs/Rx';
 export class RaspicamStatsComponent implements OnInit, OnDestroy {
 
 	ticks = 0;
-	stats = {};
-	
+	raspicamStats = {};
+	synologyStats = {};
+
 	private timer;
 	private sub: Subscription;
 
 	constructor(
 		private environmentService: EnvironmentService,
 		private changeDetectorRef: ChangeDetectorRef,
-		private ipcService: IpcService
+		private ipcService: IpcService,
+		private http: Http
 	) { }
 
 	ngOnInit() {
@@ -35,7 +38,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 	}
 
 	handleSetRaspicamStats(stats: any) {
-		this.stats = stats;
+		this.raspicamStats = stats;
 		this.changeDetectorRef.detectChanges();
 	}
 
@@ -46,5 +49,12 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 
 	private getStats(){
 		this.ipcService.getRaspicamStats();
+
+		if (this.ticks % 3 === 0) {
+			this.http.get("http://10.0.0.14/stats/index.php?forexport")
+				.subscribe(data => {
+					this.synologyStats = data.json();
+				});
+		}
 	}
 }

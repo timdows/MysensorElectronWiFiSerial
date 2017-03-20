@@ -46,7 +46,6 @@ export class SideMenuComponent implements OnInit {
 	handleSetOsContent(info: any) {	
 		this.info = info;
 		this.ipAddressInfo = [];
-		console.log(info.networkInterfaces);
 		
 		Object.keys(info.networkInterfaces).forEach((ifname) => {
 			var alias = 0;
@@ -61,7 +60,7 @@ export class SideMenuComponent implements OnInit {
 					console.log("This single interface has multiple ipv4 addresses", ifname + ':' + alias, iface.address);
 				} else {
 					// this interface has only one ipv4 adress
-					console.log(ifname, iface.address);
+					//console.log(ifname, iface.address);
 					this.ipAddressInfo.push({
 						name: ifname,
 						address: iface.address
