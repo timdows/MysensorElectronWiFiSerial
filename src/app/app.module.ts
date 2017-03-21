@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/primeng';
 
 import { IpcService } from './ipc.service';
 import { EnvironmentService } from './environment.service';
+import { SerialDataService } from './serial-data.service';
 
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
 	],
 	providers: [
 		IpcService,
-		EnvironmentService
+		EnvironmentService,
+		SerialDataService
 	],
 	bootstrap: [AppComponent]
 })
