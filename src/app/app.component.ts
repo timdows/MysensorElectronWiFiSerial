@@ -15,7 +15,9 @@ export class AppComponent implements OnInit {
 		private changeDetectorRef: ChangeDetectorRef) { }
 
 	ngOnInit() {
-		this.ipcService.subscribeToEvent("push-serialdata", this, this.handlePushSerialData);
+		setTimeout(() => {
+			this.ipcService.subscribeToEvent("push-serialdata", this, this.handlePushSerialData);
+		}, 0);
 	}
 
 	handlePushSerialData(data: any) {	
