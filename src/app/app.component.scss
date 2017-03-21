@@ -1,19 +1,29 @@
-.content {
-	margin-left: 3rem;
-	transition: all .5s;
-}
-
-/deep/ .aside-open .content {
-	margin-left: 11rem;
-}
-
-.ui-g {
-	height: 100%;
+.container {
+	display: flex;
+	overflow: hidden;
+	height: 100vh;
 	position: relative;
+	width: 100%;
+	backface-visibility: hidden;
+	will-change: overflow;
 
-	&:after{
-		content: '';
-		clear: both;
-		display: block;
+	app-side-menu,
+	.content {
+		overflow: auto;
+		height: auto;
+		min-height: 100vh;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: none;
 	}
+
+	app-side-menu::-webkit-scrollbar,
+	.content::-webkit-scrollbar {
+		display: none;
+	}
+
+	.content {
+		transition: all .5s;
+		flex: 1;
+	}
+	
 }

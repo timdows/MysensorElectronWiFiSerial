@@ -30,8 +30,8 @@ app.on('ready', function () {
 
 	// Initialize the window to our specified dimensions
 	win = new BrowserWindow({
-		width: 800, 
-		height: 480,
+		//width: 800, 
+		//height: 480,
 		resizable: resizable,
 		maximizable: maximizable,
 		fullscreen: fullscreen,
@@ -77,7 +77,7 @@ app.on('ready', function () {
 });
 
 ipcMain.on("get-raspicam-stats", (event, arg) => {
-	console.log("get-raspicam-stats");
+	// console.log("get-raspicam-stats");
 
 	https.get({
 		host: '10.0.0.27',
