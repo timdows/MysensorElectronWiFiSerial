@@ -1,5 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { IpcService } from './ipc.service';
+import { SerialDataService } from './serial-data.service';
 
 @Component({
 	selector: 'mysensor-electron-wifi-serial',
@@ -8,11 +10,9 @@ import { IpcService } from './ipc.service';
 })
 export class AppComponent implements OnInit {
 
-	data = [];
-
 	constructor(
 		private ipcService: IpcService,
-		private changeDetectorRef: ChangeDetectorRef) { }
+		private serialDataService: SerialDataService) { }
 
 	ngOnInit() {
 		setTimeout(() => {
@@ -20,9 +20,7 @@ export class AppComponent implements OnInit {
 		}, 0);
 	}
 
-	handlePushSerialData(data: any) {	
-		this.data.push(data);
-
-		//this.changeDetectorRef.detectChanges();
+	handlePushSerialData(data: string) {	
+		this.serialDataService.addData(data);
 	}
 }

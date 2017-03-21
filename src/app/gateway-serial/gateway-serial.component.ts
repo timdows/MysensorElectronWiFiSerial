@@ -1,15 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { SerialDataService } from '../serial-data.service';
 
 @Component({
-  selector: 'app-gateway-serial',
-  templateUrl: './gateway-serial.component.pug',
-  styleUrls: ['./gateway-serial.component.css']
+	selector: 'app-gateway-serial',
+	templateUrl: './gateway-serial.component.pug',
+	styleUrls: ['./gateway-serial.component.css']
 })
 export class GatewaySerialComponent implements OnInit {
+	
+	subscription: Subscription;
+	data = [];
 
-  constructor() { }
+	constructor(private serialDataService: SerialDataService) { }
 
-  ngOnInit() {
-  }
-
+	ngOnInit() {
+		this.subscription = this.serialDataService
+			.getAsObservable()
+			.subscribe(() => { 
+				this.data = this.serialDataService.getData();
+			});
+	}
 }
