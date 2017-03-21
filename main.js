@@ -33,8 +33,8 @@ app.on('ready', function () {
 	win = new BrowserWindow({
 		//width: 800, 
 		//height: 480,
-		resizable: resizable,
-		maximizable: maximizable,
+		//resizable: resizable,
+		//maximizable: maximizable,
 		fullscreen: fullscreen,
 		frame: frame,
 		autoHideMenuBar: autoHideMenuBar
