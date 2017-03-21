@@ -72,4 +72,8 @@ export class SideMenuComponent implements OnInit {
 
 		this.changeDetectorRef.detectChanges();
 	}
+
+	clickCloseApp() {
+		this.ipcService.closeApp();
+	}
 }

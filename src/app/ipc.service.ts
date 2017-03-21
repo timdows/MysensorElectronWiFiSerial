@@ -24,4 +24,8 @@ export class IpcService {
 	getOsContent() {
 		electron.ipcRenderer.send("get-os-content");
 	}
+
+	closeApp() {
+		electron.ipcRenderer.send("close-electron");
+	}
 }

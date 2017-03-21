@@ -94,7 +94,7 @@ ipcMain.on("get-raspicam-stats", (event, arg) => {
 		
 		response.on('end', function() {
 			var json = JSON.parse(data);
-			console.log("get-raspicam-stats", json);
+			//console.log("get-raspicam-stats", json);
 			win.webContents.send("set-raspicam-stats", json);
 		});
 
@@ -124,11 +124,11 @@ ipcMain.on("get-os-content", (event, arg) => {
 });
 
 ipcMain.on("get-os-cpu-stats", (event, arg) => {
-	console.log("get-os-cpu-stats", arg);
+	//console.log("get-os-cpu-stats", arg);
 	var cpus = os.cpus();
 
 	for(var i = 0, len = cpus.length; i < len; i++) {
-		console.log("CPU %s:", i);
+		//console.log("CPU %s:", i);
 		win.webContents.send("set-os-cpu-stats", i);
 		var cpu = cpus[i], total = 0;
 
@@ -141,6 +141,10 @@ ipcMain.on("get-os-cpu-stats", (event, arg) => {
 			win.webContents.send("set-os-cpu-stats", type);
 		}
 	}
+});
+
+ipcMain.on("close-electron", (event, arg) => {
+	app.quit();
 });
 
 app.on('activate', () => {
