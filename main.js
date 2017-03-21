@@ -76,7 +76,7 @@ app.on('ready', function () {
 		});
 	}
 
-	var port = new SerialPort('/dev/ttyAMA0', {
+	var port = new SerialPort('/dev/serial0', {
 		baudRate: 9600,
 		parser: SerialPort.parsers.readline('\n')
 	});
@@ -88,6 +88,7 @@ app.on('ready', function () {
 
 	port.on('data', function(data) {
 		console.log("SerialPort data:", data);
+		win.webContents.send("push-serialdata", data);
 	});
 });
 
