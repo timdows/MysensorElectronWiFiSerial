@@ -16,12 +16,16 @@ app.on('ready', function () {
 	maximizable = false;
 	resizable = false;
 	openDevTools = false;
+	fullscreen = true;
+	autoHideMenuBar = true;
 
 	if (process.argv[2] == "dev") {
 		frame = true;
 		maximizable = true;
 		resizable = true;
 		openDevTools = true;
+		fullscreen = false;
+		autoHideMenuBar = false;
 	}
 
 	// Initialize the window to our specified dimensions
@@ -30,8 +34,9 @@ app.on('ready', function () {
 		height: 480,
 		resizable: resizable,
 		maximizable: maximizable,
-		fullscreenable: false,
-		frame: frame
+		fullscreen: fullscreen,
+		frame: frame,
+		autoHideMenuBar: autoHideMenuBar
 	});
 
 	// Specify entry point
@@ -54,6 +59,21 @@ app.on('ready', function () {
 		win = null;
 	});
 
+	if (process.env.PACKAGE === 'true') {
+		win.on("blur", function() {
+			win.focus();
+		});
+
+		win.on("leave-full-screen", function() {
+			win.setFullScreen(true);
+		});
+
+		win.on("resize", function() {
+			setTimeout(function() {
+				win.reload();
+			}, 1000);
+		});
+	}
 });
 
 ipcMain.on("get-raspicam-stats", (event, arg) => {
