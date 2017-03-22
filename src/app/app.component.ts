@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { IpcService } from './ipc.service';
-import { SerialDataService } from './serial-data.service';
+import { IpcService, SerialDataService } from './_services/index';
 
 @Component({
 	selector: 'mysensor-electron-wifi-serial',

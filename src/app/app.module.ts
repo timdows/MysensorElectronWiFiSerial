@@ -2,13 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, RequestOptions, XHRBackend } from "@angular/http";
 
 import { ButtonModule } from 'primeng/primeng';
 
-import { IpcService } from './ipc.service';
-import { EnvironmentService } from './environment.service';
-import { SerialDataService } from './serial-data.service';
+import { Configuration } from './app.configuration';
+import { HttpService, IpcService, EnvironmentService, SerialDataService } from './_services/index';
 
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
@@ -52,6 +51,14 @@ const appRoutes: Routes = [
 		ButtonModule
 	],
 	providers: [
+		{
+			provide: HttpService,
+			useFactory: (backend: XHRBackend, options: RequestOptions, configuration: Configuration) => {
+				return new HttpService(backend, options, configuration);
+			},
+			deps: [XHRBackend, RequestOptions, Configuration]
+		},
+		Configuration,
 		IpcService,
 		EnvironmentService,
 		SerialDataService

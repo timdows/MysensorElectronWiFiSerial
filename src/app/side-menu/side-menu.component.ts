@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { IpcService } from '../ipc.service';
-import { EnvironmentService } from '../environment.service';
+import { IpcService, EnvironmentService } from '../_services/index';
 
 @Component({
 	selector: 'app-side-menu',

@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { SerialDataService } from '../serial-data.service';
+
+import { SerialDataService } from '../_services/index';
 
 @Component({
 	selector: 'app-gateway-serial',

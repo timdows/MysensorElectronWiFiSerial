@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Http } from '@angular/http';
-import { IpcService } from '../ipc.service';
-import { EnvironmentService } from '../environment.service';
 import { Observable, Subscription  } from 'rxjs/Rx';
+
+import { IpcService, EnvironmentService } from '../_services/index';
 
 @Component({
 	selector: 'app-raspicam-stats',

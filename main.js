@@ -5,7 +5,10 @@ const fs = require('fs');
 const os = require('os');
 const username = require('username');
 const https = require('https');
-const SerialPort = require('serialport');
+if (process.env.ENVIRONMENT === 'pi'){
+	const SerialPort = require('serialport');
+}
+
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -76,20 +79,22 @@ app.on('ready', function () {
 		});
 	}
 
-	var port = new SerialPort('/dev/serial0', {
-		baudRate: 9600,
-		parser: SerialPort.parsers.readline('\n')
-	});
+	if (process.env.ENVIRONMENT === 'pi'){
+		var port = new SerialPort('/dev/serial0', {
+			baudRate: 9600,
+			parser: SerialPort.parsers.readline('\n')
+		});
 
-	port.on('open', function() {});
-	port.on('error', function(err) {
-		console.log("SerialPort error:", err.message);
-	});
+		port.on('open', function() {});
+		port.on('error', function(err) {
+			console.log("SerialPort error:", err.message);
+		});
 
-	port.on('data', function(data) {
-		console.log("SerialPort data:", data);
-		win.webContents.send("push-serialdata", data);
-	});
+		port.on('data', function(data) {
+			console.log("SerialPort data:", data);
+			win.webContents.send("push-serialdata", data);
+		});
+	}
 });
 
 ipcMain.on("get-raspicam-stats", (event, arg) => {
