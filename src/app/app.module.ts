@@ -7,7 +7,7 @@ import { HttpModule, RequestOptions, XHRBackend } from "@angular/http";
 import { NvD3Module } from 'angular2-nvd3-aot';
 
 import { Configuration } from './app.configuration';
-import { HttpService, IpcService, EnvironmentService, SerialDataService } from './_services/index';
+import { HttpService, IpcService, EnvironmentService, SerialDataService, VeraExportService } from './_services/index';
 
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
@@ -63,7 +63,8 @@ const appRoutes: Routes = [
 		Configuration,
 		IpcService,
 		EnvironmentService,
-		SerialDataService
+		SerialDataService,
+		VeraExportService
 	],
 	bootstrap: [AppComponent]
 })
