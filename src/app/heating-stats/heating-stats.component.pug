@@ -1,6 +1,7 @@
-p heating-stats works!
+ng-container(*ngIf="clientModel.total")
+	h2 {{clientModel.total.heaterMeterGroup.name}}
+	app-nvd3([options]="options", [data]="clientModel.total.yearGraphData")
 
-div
-	app-nvd3([options]="options", [data]="data")
-
-pre {{clientModel | json}}
+ng-container(*ngFor="let room of clientModel.clientModels")
+	h2 {{room.heaterMeterGroup.name}}
+	app-nvd3([options]="options", [data]="room.yearGraphData")

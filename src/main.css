@@ -20,6 +20,7 @@ body {
 
 /* nvd3 */
 .nvd3,
+.nvd3 text,
 .nvd3 .nv-discretebar .nv-groups text { 
 	fill:#fff;
 }
