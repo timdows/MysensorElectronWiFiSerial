@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../_services/index';
+import { Http } from '@angular/http';
+//import { HttpService } from '../_services/index';
+
+import { Configuration } from "../app.configuration";
 
 declare var d3: any;
 
@@ -39,14 +42,14 @@ export class HeatingStatsComponent implements OnInit {
 		}
 	}
 
-	constructor(private httpService: HttpService) { }
+	constructor(private http: Http, private configuration: Configuration) { }
 
 	ngOnInit() {
 		this.getClientModel();
 	}
 
 	private getClientModel() {
-		this.httpService.get("http://localhost:5002/heater/getclientmodel.json")
+		this.http.get(`${this.configuration.ApiProxyUrl}http://localhost:5002/heater/getclientmodel.json`)
 			.subscribe(data => {
 				this.clientModel = data.json();
 			});

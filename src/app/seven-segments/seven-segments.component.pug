@@ -1,21 +1,15 @@
-.ui-g-12.ui-g-nopad
-	h4 Seven segments info
-.ui-g-12.ui-g-nopad
-	h2 {{stats.watt}} watt
-.ui-g-12.ui-g-nopad
-	.ui-g-3.ui-g-nopad
-		.box.bg-aqua
-			h2 {{stats.thisWeekTotal}}
-			p kWh this week
-	.ui-g-3.ui-g-nopad
-		.box.bg-green
-			h2 {{stats.lastWeekTotal}}
-			p kWh last week
-	.ui-g-3.ui-g-nopad
-		.box.bg-yellow
-			h2 {{stats.thisMonthTotal}}
-			p kWh this month
-	.ui-g-3.ui-g-nopad
-		.box.bg-red
-			h2 {{stats.lastMonthTotal}}
-			p kWh last month
+h4 Seven segments info
+h2 {{stats.watt}} watt
+.container
+	.box.bg-aqua
+		h2 {{stats.thisWeekTotal}}
+		p kWh this week
+	.box.bg-green
+		h2 {{stats.lastWeekTotal}}
+		p kWh last week
+	.box.bg-yellow
+		h2 {{stats.thisMonthTotal}}
+		p kWh this month
+	.box.bg-red
+		h2 {{stats.lastMonthTotal}}
+		p kWh last month

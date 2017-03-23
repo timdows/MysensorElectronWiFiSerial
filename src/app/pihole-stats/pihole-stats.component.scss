@@ -1,29 +1,33 @@
-.box {
-	border-radius: .2rem;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-	display: block;
-	margin-bottom: 2rem;
-	position: relative;
-	padding: 1rem;
-	margin: .2rem;
+.container {
+	display: flex;
 
-	> p{
-		font-size: .9rem;
-	}
+	.box {
+		border-radius: .2rem;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		flex: 1;
+		margin-bottom: 2rem;
+		position: relative;
+		padding: 1rem;
+		margin: .2rem;
 
-	&.bg-aqua {
-		background-color: #00c0ef !important;
-	}
+		> p{
+			font-size: .9rem;
+		}
 
-	&.bg-green {
-		background-color: #00a65a !important
-	}
+		&.bg-aqua {
+			background-color: #00c0ef !important;
+		}
 
-	&.bg-yellow {
-		background-color: #f39c12 !important;
-	}
+		&.bg-green {
+			background-color: #00a65a !important
+		}
 
-	&.bg-red {
-		background-color: #dd4b39 !important;
+		&.bg-yellow {
+			background-color: #f39c12 !important;
+		}
+
+		&.bg-red {
+			background-color: #dd4b39 !important;
+		}
 	}
 }
