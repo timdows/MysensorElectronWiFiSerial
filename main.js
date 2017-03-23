@@ -6,6 +6,7 @@ const os = require('os');
 const username = require('username');
 const https = require('https');
 const schedule = require('node-schedule');
+const zipdir = require('zip-dir');
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -101,7 +102,8 @@ app.on('ready', function () {
 			win.webContents.send("push-serialdata", data);
 		});
 
-		var j = schedule.scheduleJob('* * * * *', function () {
+		// Set a job at 1 every night
+		var j = schedule.scheduleJob('0 1 * * *', function () {
 			console.log('cron fired!');
 			win.webContents.send("execute-vera-export");
 		});
@@ -112,12 +114,25 @@ ipcMain.on("download-datamine-database", (event, settings) => {
 	console.log("download-datamine-database", settings);
 
 	scp.get({
-		file: '/usbdisk/dataMine/database', // remote file to grab
+		file: settings.dataMineDirectoryPath, // remote file to grab
 		user: settings.username,   // username to authenticate as on remote system
 		password: settings.password,   // username to authenticate as on remote system
 		host: settings.veraIpAddress,   // remote host to transfer from, set up in your ~/.ssh/config
 		port: '22',         // remote port, optional, defaults to '22'
-		path: '~'           // local path to save to (this would result in a ~/file.txt on the local machine)
+		path: settings.exportPathOnPi           // local path to save to (this would result in a ~/file.txt on the local machine)
+	}, function (err, stdout, stderr) {
+		console.log("callback scp get", err, stdout, stderr);
+		
+		var today = new Date();
+		var dateString = today.toISOString().substring(0, 10);
+
+		zipdir(
+			settings.exportPathOnPi + '/database', 
+			{ saveTo: settings.exportPathOnPi + '/' + dateString + '.zip' }, 
+			function (err, buffer) {
+				console.log("zip callback", err);
+			}
+		);
 	});
 });
 
