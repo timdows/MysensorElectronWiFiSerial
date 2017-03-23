@@ -7,13 +7,16 @@ const username = require('username');
 const https = require('https');
 const schedule = require('node-schedule');
 
-if (process.env.ENVIRONMENT === 'pi') {
-	const SerialPort = require('serialport');
-	const scp = require('scp');
-}
-
 require('electron-reload')(__dirname);
 require('dotenv').config();
+
+let SerialPort = null;
+let scp = null;
+if (process.env.ENVIRONMENT === 'pi') {
+	console.log("Environment: Pi");
+	SerialPort = require('serialport');
+	scp = require('scp');
+}
 
 let win = null;
 
@@ -94,7 +97,7 @@ app.on('ready', function () {
 		});
 
 		port.on('data', function (data) {
-			console.log("SerialPort data:", data);
+			//console.log("SerialPort data:", data);
 			win.webContents.send("push-serialdata", data);
 		});
 
@@ -127,8 +130,8 @@ ipcMain.on("download-datamine-database", (event, settings) => {
 
 	scp.get({
 		file: '/usbdisk/dataMine/sunriseSunset.txt', // remote file to grab
-		user: settings.username + ":" + settings.password,   // username to authenticate as on remote system
-		host: settings.verIpAddress,   // remote host to transfer from, set up in your ~/.ssh/config
+		user: settings.username,   // username to authenticate as on remote system
+		host: settings.veraIpAddress,   // remote host to transfer from, set up in your ~/.ssh/config
 		port: '22',         // remote port, optional, defaults to '22'
 		path: '~'           // local path to save to (this would result in a ~/file.txt on the local machine)
 	});
