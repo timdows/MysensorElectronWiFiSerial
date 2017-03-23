@@ -15,7 +15,7 @@ let scp = null;
 if (process.env.ENVIRONMENT === 'pi') {
 	console.log("Environment: Pi");
 	SerialPort = require('serialport');
-	scp = require('scp');
+	scp = require('./scp.js');
 }
 
 let win = null;
@@ -110,27 +110,11 @@ app.on('ready', function () {
 
 ipcMain.on("download-datamine-database", (event, settings) => {
 	console.log("download-datamine-database", settings);
-	// client.scp({
-	// 	host: settings.veraIpAddress,
-	// 	username: settings.username,
-	// 	password: settings.password,
-	// 	path: '/usbdisk/dataMine/sunriseSunset.txt'
-	// }, './', function(err) {
-	// 	console.log(err);
-	// });
-
-	// var client = new Client({
-	// 	port: 22,
-	// 	host: settings.veraIpAddress,
-	// 	username: settings.username,
-	// 	password: settings.password
-	// });
-	// });
-
 
 	scp.get({
-		file: '/usbdisk/dataMine/sunriseSunset.txt', // remote file to grab
+		file: '/usbdisk/dataMine/database', // remote file to grab
 		user: settings.username,   // username to authenticate as on remote system
+		password: settings.password,   // username to authenticate as on remote system
 		host: settings.veraIpAddress,   // remote host to transfer from, set up in your ~/.ssh/config
 		port: '22',         // remote port, optional, defaults to '22'
 		path: '~'           // local path to save to (this would result in a ~/file.txt on the local machine)
