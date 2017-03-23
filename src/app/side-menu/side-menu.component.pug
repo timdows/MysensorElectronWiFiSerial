@@ -9,21 +9,28 @@ aside
 		.block(*ngFor="let ipAddress of ipAddressInfo")
 			span {{ipAddress.name}}
 			span {{ipAddress.address}}
-	.container(*ngIf="isOpenAside")
-		button(pButton="", type="button", (click)="toggleAside()", label="Toggle menu", icon="fa-bars")
-		button(pButton="", type="button", (click)="changeRoute('gateway-serial')", label="Gateway", icon="fa-microchip")
-		button(pButton="", type="button", (click)="changeRoute('nrf24-sniffer')", label="Sniffer", icon="fa-search")
-		button(pButton="", type="button", (click)="changeRoute('pihole-stats')", label="PiHole", icon="fa-globe")
-		button(pButton="", type="button", (click)="changeRoute('seven-segments')", label="Seven segments", icon="fa-braille")
-		button(pButton="", type="button", (click)="changeRoute('raspicam-stats')", label="Raspicam", icon="fa-camera-retro")
-		button(pButton="", type="button", (click)="changeRoute('heating-stats')", label="Heating", icon="fa-thermometer-empty")
-		button(pButton="", type="button", (click)="clickCloseApp()", label="Close app", icon="fa-close")
-	.container(*ngIf="!isOpenAside")
-		button(pButton="", type="button", (click)="toggleAside()",icon="fa-bars")
-		button(pButton="", type="button", (click)="changeRoute('gateway-serial')", icon="fa-microchip")
-		button(pButton="", type="button", (click)="changeRoute('nrf24-sniffer')", icon="fa-search")
-		button(pButton="", type="button", (click)="changeRoute('pihole-stats')", icon="fa-globe")
-		button(pButton="", type="button", (click)="changeRoute('seven-segments')", icon="fa-braille")
-		button(pButton="", type="button", (click)="changeRoute('raspicam-stats')", icon="fa-camera-retro")
-		button(pButton="", type="button", (click)="changeRoute('heating-stats')", icon="fa-thermometer-empty")
-		button(pButton="", type="button", (click)="clickCloseApp()", icon="fa-close")
+	.container([ngClass]="{'showText': isOpenAside}")
+		button(type="button", (click)="toggleAside()") 
+			i(class="fa fa-bars")
+			span Toggle menu
+		button(type="button", (click)="changeRoute('gateway-serial')")
+			i(class="fa fa-microchip")
+			span Gateway
+		button(type="button", (click)="changeRoute('nrf24-sniffer')")
+			i(class="fa fa-search")
+			span Sniffer
+		button(type="button", (click)="changeRoute('pihole-stats')")
+			i(class="fa fa-globe")
+			span PiHole
+		button(type="button", (click)="changeRoute('seven-segments')")
+			i(class="fa fa-braille")
+			span Seven segments
+		button(type="button", (click)="changeRoute('raspicam-stats')")
+			i(class="fa fa-camera-retro")
+			span Raspicam
+		button(type="button", (click)="changeRoute('heating-stats')")
+			i(class="fa fa-thermometer-empty")
+			span Heating
+		button(type="button", (click)="clickCloseApp()")
+			i(class="fa fa-close")
+			span Close app

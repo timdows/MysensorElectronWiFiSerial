@@ -29,7 +29,6 @@
     "dotenv": "^4.0.0",
     "electron-reload": "^1.1.0",
     "font-awesome": "^4.7.0",
-    "primeng": "^2.0.1",
     "pug-html-loader": "^1.1.0",
     "rxjs": "^5.0.1",
     "serialport": "^4.0.7",

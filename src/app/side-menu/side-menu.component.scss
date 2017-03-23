@@ -11,6 +11,31 @@ aside {
 			width: 100%;
 			margin-bottom: .1rem;
 			min-height: 3rem;
+			border: none;
+  			background: #555;
+
+			span {
+				display: none;
+				color: white;
+				font-size: 1rem;
+				font-family: 'Roboto', sans-serif;
+			}
+			i {
+				color: white;
+				font-size: 1rem;
+			}
+		}
+
+		&.showText {
+			button {
+				span {
+					display: inline;
+				}
+			}
+			i {
+				float: left;
+				margin-left: 10px;
+			}
 		}
 	}
 
