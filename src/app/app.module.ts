@@ -19,6 +19,10 @@ import { SevenSegmentsComponent } from './seven-segments/seven-segments.componen
 import { RaspicamStatsComponent } from './raspicam-stats/raspicam-stats.component';
 import { HeatingStatsComponent } from './heating-stats/heating-stats.component';
 
+export function httpServiceFactory(backend: XHRBackend, options: RequestOptions, configuration: Configuration) {
+	return new HttpService(backend, options, configuration);
+}
+
 const appRoutes: Routes = [
 	{ path: 'gateway-serial', component: GatewaySerialComponent },
 	{ path: 'nrf24-sniffer', component: Nrf24SnifferComponent },
@@ -55,9 +59,7 @@ const appRoutes: Routes = [
 	providers: [
 		{
 			provide: HttpService,
-			useFactory: (backend: XHRBackend, options: RequestOptions, configuration: Configuration) => {
-				return new HttpService(backend, options, configuration);
-			},
+			useFactory: httpServiceFactory,
 			deps: [XHRBackend, RequestOptions, Configuration]
 		},
 		Configuration,
