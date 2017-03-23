@@ -18,6 +18,12 @@ body {
 	float: left;
 }
 
+/* nvd3 */
+.nvd3,
+.nvd3 .nv-discretebar .nv-groups text { 
+	fill:#fff;
+}
+
 /* Loading */
 .sk-cube-grid {
 width: 60px;

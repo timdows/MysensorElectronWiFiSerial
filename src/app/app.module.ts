@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule, RequestOptions, XHRBackend } from "@angular/http";
 
 import { ButtonModule } from 'primeng/primeng';
+import { NvD3Module } from 'angular2-nvd3-aot';
 
 import { Configuration } from './app.configuration';
 import { HttpService, IpcService, EnvironmentService, SerialDataService } from './_services/index';
@@ -48,7 +49,8 @@ const appRoutes: Routes = [
 		BrowserModule,
 		FormsModule,
 		HttpModule,
-		ButtonModule
+		ButtonModule,
+		NvD3Module
 	],
 	providers: [
 		{
