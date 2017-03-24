@@ -25,8 +25,8 @@ export class IpcService {
 		electron.ipcRenderer.send("get-os-content");
 	}
 
-	downloadDataMineDatabase(settings: any) {
-		electron.ipcRenderer.send("download-datamine-database", settings);
+	downloadDataMineDatabase(settings: any, apiProxyUrl: string) {
+		electron.ipcRenderer.send("download-datamine-database", settings, apiProxyUrl);
 	}
 
 	closeApp() {

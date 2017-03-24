@@ -7,6 +7,7 @@ const username = require('username');
 const https = require('https');
 const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
+const http = require('http');
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -108,29 +109,54 @@ app.on('ready', function () {
 			win.webContents.send("execute-vera-export");
 		});
 	}
+
+	//Test
+	setTimeout(() => {
+		//win.webContents.send("execute-upload-export", "/home/pi/exports/2017-02-23.zip");
+		//win.webContents.send("execute-upload-export", "c:\\users\\timdows\\desktop\\2017-02-23.zip");
+		win.webContents.send("execute-vera-export");
+	}, 5 * 1000);
 });
 
-ipcMain.on("download-datamine-database", (event, settings) => {
-	console.log("download-datamine-database", settings);
+ipcMain.on("download-datamine-database", (event, settings, apiProxyUrl) => {
+	console.log("download-datamine-database", settings, apiProxyUrl);
 
 	scp.get({
-		file: settings.dataMineDirectoryPath, // remote file to grab
-		user: settings.username,   // username to authenticate as on remote system
-		password: settings.password,   // username to authenticate as on remote system
-		host: settings.veraIpAddress,   // remote host to transfer from, set up in your ~/.ssh/config
-		port: '22',         // remote port, optional, defaults to '22'
-		path: settings.exportPathOnPi           // local path to save to (this would result in a ~/file.txt on the local machine)
+		//file: settings.dataMineDirectoryPath, // remote file to grab
+		file: "/usbdisk/dataMine/sunriseSunset.txt",
+		user: settings.username, // username to authenticate as on remote system
+		password: settings.password, // username to authenticate as on remote system
+		host: settings.veraIpAddress, // remote host to transfer from, set up in your ~/.ssh/config
+		port: '22', // remote port, optional, defaults to '22'
+		path: settings.exportPathOnPi // local path to save to (this would result in a ~/file.txt on the local machine)
 	}, function (err, stdout, stderr) {
 		console.log("callback scp get", err, stdout, stderr);
-		
+
 		var today = new Date();
 		var dateString = today.toISOString().substring(0, 10);
-
+		var filename = settings.exportPathOnPi + '/' + dateString + '.zip';
 		zipdir(
-			settings.exportPathOnPi + '/database', 
-			{ saveTo: settings.exportPathOnPi + '/' + dateString + '.zip' }, 
+			settings.exportPathOnPi + '/database',
+			{ saveTo: filename },
 			function (err, buffer) {
 				console.log("zip callback", err);
+				//win.webContents.send("execute-upload-export", filename);
+				let input = new FormData();
+				input.append(dateString, buffer, filename);
+
+				var options = {
+					host: "localhost",
+					port: "5002",
+					path: "/veraexport/upload",
+					method: "POST",
+					headers: {
+						'Content-Type': "multipart/form-data",
+					}
+				};
+
+				var postRequest = http.request(options);
+				postRequest.write(input);
+				postRequest.end();
 			}
 		);
 	});

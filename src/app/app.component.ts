@@ -26,6 +26,6 @@ export class AppComponent implements OnInit {
 	}
 
 	handleExecuteVeraExport() {
-		this.veraExportService.run();
+		this.veraExportService.export();
 	}
 }
