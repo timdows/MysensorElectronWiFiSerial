@@ -7,6 +7,7 @@ const username = require('username');
 const https = require('https');
 const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
+const FormData = require('form-data');
 const http = require('http');
 
 require('electron-reload')(__dirname);
@@ -119,11 +120,10 @@ app.on('ready', function () {
 });
 
 ipcMain.on("download-datamine-database", (event, settings, apiProxyUrl) => {
-	console.log("download-datamine-database", settings, apiProxyUrl);
+	//console.log("download-datamine-database", settings, apiProxyUrl);
 
 	scp.get({
-		//file: settings.dataMineDirectoryPath, // remote file to grab
-		file: "/usbdisk/dataMine/sunriseSunset.txt",
+		file: settings.dataMineDirectoryPath, // remote file to grab
 		user: settings.username, // username to authenticate as on remote system
 		password: settings.password, // username to authenticate as on remote system
 		host: settings.veraIpAddress, // remote host to transfer from, set up in your ~/.ssh/config
@@ -140,23 +140,14 @@ ipcMain.on("download-datamine-database", (event, settings, apiProxyUrl) => {
 			{ saveTo: filename },
 			function (err, buffer) {
 				console.log("zip callback", err);
-				//win.webContents.send("execute-upload-export", filename);
-				let input = new FormData();
-				input.append(dateString, buffer, filename);
+				
+				let formData = new FormData();
+				formData.append('files', buffer);
 
-				var options = {
-					host: "localhost",
-					port: "5002",
-					path: "/veraexport/upload",
-					method: "POST",
-					headers: {
-						'Content-Type': "multipart/form-data",
-					}
-				};
-
-				var postRequest = http.request(options);
-				postRequest.write(input);
-				postRequest.end();
+				formData.submit(apiProxyUrl + "http://localhost:5002/veraexport/upload", function (err, res) {
+					console.log(err, res.statusCode);
+					res.resume();
+				});
 			}
 		);
 	});
