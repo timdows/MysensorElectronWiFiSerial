@@ -9,6 +9,7 @@ const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
 const FormData = require('form-data');
 const http = require('http');
+const rimraf = require('rimraf');
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -120,6 +121,10 @@ app.on('ready', function () {
 ipcMain.on("download-datamine-database", (event, settings) => {
 	console.log("download-datamine-database", settings);
 
+	rimraf(settings.exportPathOnPi + '/database', function () { 
+		console.log("Deleted export/database directory before SCP starts");
+	});
+
 	scp.get({
 		file: settings.dataMineDirectoryPath, // remote file to grab
 		user: settings.username, // username to authenticate as on remote system
@@ -128,11 +133,12 @@ ipcMain.on("download-datamine-database", (event, settings) => {
 		port: '22', // remote port, optional, defaults to '22'
 		path: settings.exportPathOnPi // local path to save to (this would result in a ~/file.txt on the local machine)
 	}, function (err, stdout, stderr) {
-		console.log("callback scp get", err, stdout, stderr);
+		console.log("SCP finished", err, stdout, stderr);
 
 		var today = new Date();
 		var dateString = today.toISOString().substring(0, 10);
 		var filename = settings.exportPathOnPi + '/' + dateString + '.zip';
+		console.log("Zipping export/database contents to", filename);
 		zipdir(
 			settings.exportPathOnPi + '/database',
 			{ saveTo: filename },
