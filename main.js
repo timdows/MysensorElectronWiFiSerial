@@ -113,14 +113,12 @@ app.on('ready', function () {
 
 	//Test
 	setTimeout(() => {
-		//win.webContents.send("execute-upload-export", "/home/pi/exports/2017-02-23.zip");
-		//win.webContents.send("execute-upload-export", "c:\\users\\timdows\\desktop\\2017-02-23.zip");
 		win.webContents.send("execute-vera-export");
-	}, 5 * 1000);
+	}, 30 * 1000);
 });
 
-ipcMain.on("download-datamine-database", (event, settings, apiProxyUrl) => {
-	//console.log("download-datamine-database", settings, apiProxyUrl);
+ipcMain.on("download-datamine-database", (event, settings) => {
+	console.log("download-datamine-database", settings);
 
 	scp.get({
 		file: settings.dataMineDirectoryPath, // remote file to grab
@@ -142,10 +140,10 @@ ipcMain.on("download-datamine-database", (event, settings, apiProxyUrl) => {
 				console.log("zip callback", err);
 				
 				let formData = new FormData();
-				formData.append('files', buffer);
+				formData.append('files', fs.createReadStream(filename));
 
-				formData.submit(apiProxyUrl + "http://localhost:5002/veraexport/upload", function (err, res) {
-					console.log(err, res.statusCode);
+				formData.submit("https://housedb.timdows.com/veraexport/upload", function (err, res) {
+					console.log("submit", err, res.contents, res.statusCode);
 					res.resume();
 				});
 			}
