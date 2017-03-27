@@ -18,12 +18,12 @@ export class HttpService extends Http {
 		}
 
 	request(url: string|Request, options?: RequestOptionsArgs): Observable<any> {
-		if (typeof url === 'string' || url instanceof String) {
-			url = `${this.configuration.ApiProxyUrl}${url}`;
-		}
-		else {
-			url.url = `${this.configuration.ApiProxyUrl}${url.url}`;
-		}
+		// if (typeof url === 'string' || url instanceof String) {
+		// 	url = `${this.configuration.ApiProxyUrl}${url}`;
+		// }
+		// else {
+		// 	url.url = `${this.configuration.ApiProxyUrl}${url.url}`;
+		// }
 
 		return super.request(url, options).catch(this.catchAuthError(this));
 	}

@@ -29,6 +29,10 @@ export class IpcService {
 		electron.ipcRenderer.send("download-datamine-database", settings);
 	}
 
+	getVera3Stats(settings: any) {
+		electron.ipcRenderer.send("get-vera3-stats", settings);
+	}
+
 	closeApp() {
 		electron.ipcRenderer.send("close-electron");
 	}

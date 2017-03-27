@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable, Subscription  } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { Configuration } from "app/app.configuration";
 
 @Component({
 	selector: 'app-pihole-stats',
@@ -14,7 +15,8 @@ export class PiholeStatsComponent implements OnInit, OnDestroy {
 	private timer;
 	private sub: Subscription;
 
-	constructor(private http: Http) { }
+	constructor(private http: Http,
+		private configuration: Configuration) { }
 
 	ngOnInit() {
 		this.timer = Observable.timer(0,5000);
@@ -31,7 +33,7 @@ export class PiholeStatsComponent implements OnInit, OnDestroy {
 	}
 
 	private getSummary(){
-		this.http.get("http://10.0.0.8/admin/api.php?summary")
+		this.http.get(`${this.configuration.PiholeHost}admin/api.php?summary`)
 			.subscribe(data => {
 				this.stats = data.json();
 			});

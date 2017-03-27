@@ -49,7 +49,7 @@ export class HeatingStatsComponent implements OnInit {
 	}
 
 	private getClientModel() {
-		this.http.get(`${this.configuration.ApiProxyUrl}http://localhost:5002/heater/getclientmodel.json`)
+		this.http.get(`${this.configuration.ApiHost}heater/getclientmodel.json`)
 			.subscribe(data => {
 				this.clientModel = data.json();
 			});

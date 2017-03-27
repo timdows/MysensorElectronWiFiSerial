@@ -10,6 +10,7 @@ const zipdir = require('zip-dir');
 const FormData = require('form-data');
 const http = require('http');
 const rimraf = require('rimraf');
+const SSH = require('simple-ssh');
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -121,7 +122,7 @@ app.on('ready', function () {
 ipcMain.on("download-datamine-database", (event, settings) => {
 	console.log("download-datamine-database", settings);
 
-	rimraf(settings.exportPathOnPi + '/database', function () { 
+	rimraf(settings.exportPathOnPi + '/database', function () {
 		console.log("Deleted export/database directory before SCP starts");
 	});
 
@@ -144,7 +145,7 @@ ipcMain.on("download-datamine-database", (event, settings) => {
 			{ saveTo: filename },
 			function (err, buffer) {
 				console.log("zip callback", err);
-				
+
 				let formData = new FormData();
 				formData.append('files', fs.createReadStream(filename));
 
@@ -222,6 +223,23 @@ ipcMain.on("get-os-cpu-stats", (event, arg) => {
 			win.webContents.send("set-os-cpu-stats", type);
 		}
 	}
+});
+
+ipcMain.on("get-vera3-stats", (event, settings) => {
+	console.log("get-vera3-stats", settings);
+
+	var ssh = new SSH({
+		host: settings.veraIpAddress,
+		user: settings.username,
+		pass: settings.password
+	});
+
+	ssh.exec('df -h', {
+		out: function (stdout) {
+			console.log(stdout);
+			win.webContents.send("set-vera3-stats", stdout);
+		}
+	}).start();
 });
 
 ipcMain.on("close-electron", (event, arg) => {

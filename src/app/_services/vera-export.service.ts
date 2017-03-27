@@ -18,7 +18,7 @@ export class VeraExportService {
 
 	export() {
 		console.log("veraexportservice run");
-		this.http.get(`${this.configuration.ApiProxyUrl}http://localhost:5002/settings/getverasettings.json`)
+		this.http.get(`${this.configuration.ApiHost}settings/getverasettings.json`)
 			.subscribe((data) => {
 				this.settings = data.json();
 				this.ipcService.downloadDataMineDatabase(this.settings);

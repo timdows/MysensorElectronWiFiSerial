@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Observable, Subscription  } from 'rxjs/Rx';
 
 import { IpcService, EnvironmentService } from '../_services/index';
+import { Configuration } from "app/app.configuration";
 
 @Component({
 	selector: 'app-raspicam-stats',
@@ -22,7 +23,8 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 		private environmentService: EnvironmentService,
 		private changeDetectorRef: ChangeDetectorRef,
 		private ipcService: IpcService,
-		private http: Http
+		private http: Http,
+		private configuration: Configuration
 	) { }
 
 	ngOnInit() {
@@ -51,7 +53,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 		this.ipcService.getRaspicamStats();
 
 		if (this.ticks % 3 === 0) {
-			this.http.get("http://10.0.0.14/stats/index.php?forexport")
+			this.http.get(`${this.configuration.SynologyHost}stats/index.php?forexport`)
 				.subscribe(data => {
 					this.synologyStats = data.json();
 				});

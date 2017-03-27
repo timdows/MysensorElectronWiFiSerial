@@ -17,6 +17,7 @@ import { PiholeStatsComponent } from './pihole-stats/pihole-stats.component';
 import { SevenSegmentsComponent } from './seven-segments/seven-segments.component';
 import { RaspicamStatsComponent } from './raspicam-stats/raspicam-stats.component';
 import { HeatingStatsComponent } from './heating-stats/heating-stats.component';
+import { Vera3StatsComponent } from './vera3-stats/vera3-stats.component';
 
 // export function httpServiceFactory(backend: XHRBackend, options: RequestOptions, configuration: Configuration) {
 // 	return new HttpService(backend, options, configuration);
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
 	{ path: 'seven-segments', component: SevenSegmentsComponent },
 	{ path: 'raspicam-stats', component: RaspicamStatsComponent },
 	{ path: 'heating-stats', component: HeatingStatsComponent },
+	{ path: 'vera3-stats', component: Vera3StatsComponent },
 	{ path: '',
 		redirectTo: '/gateway-serial',
 		pathMatch: 'full'
@@ -45,7 +47,8 @@ const appRoutes: Routes = [
 		PiholeStatsComponent,
 		SevenSegmentsComponent,
 		RaspicamStatsComponent,
-		HeatingStatsComponent
+		HeatingStatsComponent,
+		Vera3StatsComponent
 	],
 	imports: [
 		RouterModule.forRoot(appRoutes),
