@@ -14,7 +14,7 @@ export class VeraExportService {
 	private powerImport1: any;
 	private powerImport2: any;
 
-	private count: number = 0;
+	private count: number = -1;
 
 	constructor(
 		private http: Http,
@@ -36,7 +36,7 @@ export class VeraExportService {
 		}
 
 		// Get stats over the full day, as this takes a while we only get these every 5 minutes
-		if (++this.count == 3) {
+		if (this.count === -1 || ++this.count >= 30) {
 			this.count = 0;
 
 			var today = new Date();
