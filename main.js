@@ -4,11 +4,11 @@ const url = require('url');
 const fs = require('fs');
 const os = require('os');
 const username = require('username');
+const http = require('http');
 const https = require('https');
 const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
 const FormData = require('form-data');
-const http = require('http');
 const rimraf = require('rimraf');
 const SSH = require('simple-ssh');
 
@@ -107,16 +107,17 @@ app.on('ready', function () {
 		});
 
 		// Set a job at 1 every night
-		var j = schedule.scheduleJob('0 1 * * *', function () {
-			console.log('cron fired!');
-			win.webContents.send("execute-vera-export");
+		var scheduleVeraDatabaseExport = schedule.scheduleJob('0 1 * * *', function () {
+			console.log('execute-vera-database-export cron fired!');
+			win.webContents.send("execute-vera-database-export");
 		});
 	}
 
-	//Test
-	setTimeout(() => {
-		win.webContents.send("execute-vera-export");
-	}, 30 * 1000);
+	var scheduleVeraValuesExport = schedule.scheduleJob('*/10 * * * * *', function () {
+		console.log('execute-vera-values-export cron fired!');
+		win.webContents.send("execute-vera-values-export");
+	});
+
 });
 
 ipcMain.on("download-datamine-database", (event, settings) => {
@@ -240,6 +241,33 @@ ipcMain.on("get-vera3-stats", (event, settings) => {
 			win.webContents.send("set-vera3-stats", stdout);
 		}
 	}).start();
+});
+
+// Used to handle CORS
+ipcMain.on("get-http-response", (event, host, path, ipcName) => {
+	console.log("get-http-response", host, path, ipcName);
+
+	http.get({
+		host: host,
+		port: 80,
+		path: path
+	}, function (response) {
+		var data = '';
+
+		response.on('data', function (d) {
+			data += d;
+		});
+
+		response.on('end', function () {
+			var json = JSON.parse(data);
+			//console.log("get-raspicam-stats", json);
+			win.webContents.send(ipcName, json);
+		});
+
+		response.on('error', function (err) {
+			console.log("get-http-response: " + err.message);
+		});
+	});
 });
 
 ipcMain.on("close-electron", (event, arg) => {

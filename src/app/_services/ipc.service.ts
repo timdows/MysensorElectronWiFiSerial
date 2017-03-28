@@ -33,6 +33,10 @@ export class IpcService {
 		electron.ipcRenderer.send("get-vera3-stats", settings);
 	}
 
+	getHttpResponse(host, path, ipcName) {
+		electron.ipcRenderer.send("get-http-response", host, path, ipcName);
+	}
+
 	closeApp() {
 		electron.ipcRenderer.send("close-electron");
 	}

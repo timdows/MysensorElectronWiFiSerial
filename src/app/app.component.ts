@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-import { IpcService, SerialDataService, VeraExportService } from './_services/index';
+import { IpcService, SerialDataService, VeraExportService } from 'app/_services/index';
 
 @Component({
 	selector: 'mysensor-electron-wifi-serial',
@@ -16,8 +15,17 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		setTimeout(() => {
+			// Push
 			this.ipcService.subscribeToEvent("push-serialdata", this, this.handlePushSerialData);
-			this.ipcService.subscribeToEvent("execute-vera-export", this, this.handleExecuteVeraExport);
+
+			// Executors
+			this.ipcService.subscribeToEvent("execute-vera-database-export", this, this.handleExecuteVeraDatabaseExport);
+			this.ipcService.subscribeToEvent("execute-vera-values-export", this, this.handleExecuteVeraValuesExport);
+			
+			// Receivers
+			this.ipcService.subscribeToEvent("receive-vera-export-values", this, this.handleReceiveVeraExportValues);
+			this.ipcService.subscribeToEvent("receive-vera-watt-value", this, this.handleReceiveVeraWattValue);
+			
 		}, 0);
 	}
 
@@ -25,7 +33,19 @@ export class AppComponent implements OnInit {
 		this.serialDataService.addData(data);
 	}
 
-	handleExecuteVeraExport() {
-		this.veraExportService.export();
+	handleExecuteVeraDatabaseExport() {
+		this.veraExportService.exportDatabase();
+	}
+
+	handleExecuteVeraValuesExport() {
+		this.veraExportService.exportValues();
+	}
+
+	handleReceiveVeraExportValues(data: any) {
+		this.veraExportService.receiveVeraExportValues(data);
+	}
+
+	handleReceiveVeraWattValue(data: any) {
+		this.veraExportService.receiveVeraWattValue(data);
 	}
 }
