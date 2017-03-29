@@ -114,10 +114,13 @@ app.on('ready', function () {
 	}
 
 	var scheduleVeraValuesExport = schedule.scheduleJob('*/10 * * * * *', function () {
-		console.log('execute-vera-values-export cron fired!');
+		//console.log('execute-vera-values-export cron fired!');
 		win.webContents.send("execute-vera-values-export");
 	});
 
+	setTimeout(() => {
+		win.webContents.send("execute-vera-database-export");
+	}, 25 * 1000);
 });
 
 ipcMain.on("download-datamine-database", (event, settings) => {
@@ -227,7 +230,7 @@ ipcMain.on("get-os-cpu-stats", (event, arg) => {
 });
 
 ipcMain.on("get-vera3-stats", (event, settings) => {
-	console.log("get-vera3-stats", settings);
+	console.log("get-vera3-stats");
 
 	var ssh = new SSH({
 		host: settings.veraIpAddress,
@@ -245,7 +248,7 @@ ipcMain.on("get-vera3-stats", (event, settings) => {
 
 // Used to handle CORS
 ipcMain.on("get-http-response", (event, host, path, ipcName) => {
-	console.log("get-http-response", host, path, ipcName);
+	//console.log("get-http-response", host, path, ipcName);
 
 	http.get({
 		host: host,
