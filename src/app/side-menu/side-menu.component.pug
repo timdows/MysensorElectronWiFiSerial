@@ -9,6 +9,9 @@ aside
 		.block(*ngFor="let ipAddress of ipAddressInfo")
 			span {{ipAddress.name}}
 			span {{ipAddress.address}}
+		.block
+			span time
+			span {{timeString}}
 	.container([ngClass]="{'showText': isOpenAside}")
 		button(type="button", (click)="toggleAside()") 
 			i(class="fa fa-bars")
