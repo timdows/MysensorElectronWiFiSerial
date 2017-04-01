@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { EnvironmentService, IpcService } from "app/_services";
+import { EnvironmentService, IpcService, VeraExportService } from "app/_services";
 import { Http } from "@angular/http";
 import { Configuration } from "app/app.configuration";
 
@@ -17,16 +17,21 @@ export class Vera3StatsComponent implements OnInit {
 		private environmentService: EnvironmentService,
 		private changeDetectorRef: ChangeDetectorRef,
 		private ipcService: IpcService,
-		private http: Http, 
-		private configuration: Configuration) { }
+		private http: Http,
+		private configuration: Configuration,
+		private veraExportService: VeraExportService) { }
 
 	ngOnInit() {
 		this.ipcService.subscribeToEvent("set-vera3-stats", this, this.handleSetVera3Stats);
 		this.getStats();
 	}
 
-	ngOnDestroy(){
+	ngOnDestroy() {
 		this.ipcService.removeAllListeners("set-vera3-stats");
+	}
+
+	exportDatabaseManually() {
+		this.veraExportService.exportDatabase();
 	}
 
 	handleSetVera3Stats(stats: any) {
