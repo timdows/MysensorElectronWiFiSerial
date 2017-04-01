@@ -117,10 +117,6 @@ app.on('ready', function () {
 		//console.log('execute-vera-values-export cron fired!');
 		win.webContents.send("execute-vera-values-export");
 	});
-
-	setTimeout(() => {
-		win.webContents.send("execute-vera-database-export");
-	}, 25 * 1000);
 });
 
 ipcMain.on("download-datamine-database", (event, settings) => {
