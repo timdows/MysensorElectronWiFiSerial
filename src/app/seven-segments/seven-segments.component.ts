@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable, Subscription  } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { Configuration } from "app/app.configuration";
 
 @Component({
 	selector: 'app-seven-segments',
@@ -10,28 +11,30 @@ import { Observable, Subscription  } from 'rxjs/Rx';
 export class SevenSegmentsComponent implements OnInit {
 	ticks = 0;
 	stats = {};
-	
+
 	private timer;
 	private sub: Subscription;
 
-	constructor(private http: Http) { }
+	constructor(
+		private http: Http,
+		private configuration: Configuration) { }
 
 	ngOnInit() {
-		this.timer = Observable.timer(0,10000);
+		this.timer = Observable.timer(0, 10000);
 		this.sub = this.timer.subscribe(t => this.timerTicks(t));
 	}
 
-	ngOnDestroy(){
+	ngOnDestroy() {
 		this.sub.unsubscribe();
 	}
 
-	private timerTicks(tick){
+	private timerTicks(tick) {
 		this.ticks = tick;
 		this.getStats();
 	}
 
-	private getStats(){
-		this.http.get("http://10.0.0.5/api/vera/sevensegment")
+	private getStats() {
+		this.http.get(`${this.configuration.ApiHost}/sevensegment/GetClientModel.json`)
 			.subscribe(data => {
 				this.stats = data.json();
 			});
