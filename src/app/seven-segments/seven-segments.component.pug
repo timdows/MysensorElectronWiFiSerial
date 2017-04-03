@@ -13,3 +13,6 @@ h2 {{stats.watt}} watt
 	.box.bg-red
 		h2 {{stats.lastMonthTotal}}
 		p kWh last month
+div Watt DateTime added: {{debug?.watt?.dateTimeAdded | date:'dd-MM-y HH:mm:ss'}}
+div High {{debug?.high?.label}} DateTime added: {{debug?.high?.dateTimeAdded | date:'dd-MM-y HH:mm:ss'}}
+div Low {{debug?.low?.label}} DateTime added: {{debug?.low?.dateTimeAdded | date:'dd-MM-y HH:mm:ss'}}

@@ -11,6 +11,7 @@ import { Configuration } from "app/app.configuration";
 export class SevenSegmentsComponent implements OnInit {
 	ticks = 0;
 	stats = {};
+	debug = {};
 
 	private timer;
 	private sub: Subscription;
@@ -37,6 +38,10 @@ export class SevenSegmentsComponent implements OnInit {
 		this.http.get(`${this.configuration.ApiHost}/sevensegment/GetClientModel.json`)
 			.subscribe(data => {
 				this.stats = data.json();
+			});
+		this.http.get(`${this.configuration.ApiHost}/sevensegment/GetDebugCacheData.json`)
+			.subscribe(data => {
+				this.debug = data.json();
 			});
 	}
 
