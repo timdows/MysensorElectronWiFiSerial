@@ -11,7 +11,8 @@ import { Configuration } from "app/app.configuration";
 export class Vera3StatsComponent implements OnInit {
 
 	private settings: any;
-	stats: any;
+	localVera3Stats: any;
+	exportFileStats: any;
 
 	constructor(
 		private environmentService: EnvironmentService,
@@ -23,7 +24,8 @@ export class Vera3StatsComponent implements OnInit {
 
 	ngOnInit() {
 		this.ipcService.subscribeToEvent("set-vera3-stats", this, this.handleSetVera3Stats);
-		this.getStats();
+		this.getLocalVera3Stats();
+		this.getExportFileStats();
 	}
 
 	ngOnDestroy() {
@@ -34,17 +36,25 @@ export class Vera3StatsComponent implements OnInit {
 		this.veraExportService.exportDatabase();
 	}
 
-	handleSetVera3Stats(stats: any) {
-		this.stats = stats;
+	handleSetVera3Stats(localVera3Stats: any) {
+		this.localVera3Stats = localVera3Stats;
 		this.changeDetectorRef.detectChanges();
 	}
 
-	private getStats() {
-		console.log("Vera3StatsComponent getStats");
+	// Stats from the vera3 at home
+	private getLocalVera3Stats() {
 		this.http.get(`${this.configuration.ApiHost}settings/getverasettings.json`)
 			.subscribe((data) => {
 				this.settings = data.json();
 				this.ipcService.getVera3Stats(this.settings);
+			});
+	}
+
+	// Information about the latest 10 exports
+	private getExportFileStats() {
+		this.http.get(`${this.configuration.ApiHost}veraexport/GetExportFileStats.json`)
+			.subscribe((data) => {
+				this.exportFileStats = data.json();
 			});
 	}
 }
