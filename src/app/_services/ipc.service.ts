@@ -17,8 +17,8 @@ export class IpcService {
 		electron.ipcRenderer.removeAllListeners(name);
 	}
 
-	getRaspicamStats() {
-		electron.ipcRenderer.send("get-raspicam-stats");
+	getRaspicamStats(settings: any) {
+		electron.ipcRenderer.send("get-raspicam-stats", settings);
 	}
 
 	getOsContent() {

@@ -158,14 +158,14 @@ ipcMain.on("download-datamine-database", (event, settings) => {
 	});
 });
 
-ipcMain.on("get-raspicam-stats", (event, arg) => {
+ipcMain.on("get-raspicam-stats", (event, settings) => {
 	// console.log("get-raspicam-stats");
 
 	https.get({
-		host: '10.0.0.27',
-		port: 3000,
-		path: '/api?action=loadStatus',
-		auth: 'timelapse:timelapse',
+		host: settings.host,
+		port: settings.port,
+		path: settings.path,
+		auth: settings.auth,
 		rejectUnauthorized: false
 	}, function (response) {
 		var data = '';

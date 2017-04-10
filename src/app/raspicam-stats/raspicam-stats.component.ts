@@ -18,6 +18,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 
 	private timer;
 	private sub: Subscription;
+	private raspicamSettings: any = null;
 
 	constructor(
 		private environmentService: EnvironmentService,
@@ -32,6 +33,11 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 		this.sub = this.timer.subscribe(t => this.timerTicks(t));
 
 		this.ipcService.subscribeToEvent("set-raspicam-stats", this, this.handleSetRaspicamStats);
+
+		this.http.get(`${this.configuration.ApiHost}settings/getraspicamsettings.json`)
+			.subscribe(data => {
+				this.raspicamSettings = data.json();
+			});
 	}
 
 	ngOnDestroy(){
@@ -50,7 +56,11 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 	}
 
 	private getStats(){
-		this.ipcService.getRaspicamStats();
+		if (this.raspicamSettings === null) {
+			return;
+		}
+
+		this.ipcService.getRaspicamStats(this.raspicamSettings);
 
 		if (this.ticks % 3 === 0) {
 			this.http.get(`${this.configuration.SynologyHost}stats/index.php?forexport`)
