@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class SerialDataService {
 
-	data = new Array(1000);
+	data = Array<string>();
 	private subject = new Subject<any>();
 
 	constructor() { }
@@ -13,6 +13,8 @@ export class SerialDataService {
 	addData(data: string) {
 		this.subject.next();
 		this.data.unshift(data);
+		// Use this to remove everyting after 30 elements in the array
+		this.data.length = 30;
 	}
 
 	getAsObservable(): Observable<any> {

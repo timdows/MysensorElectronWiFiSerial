@@ -11,6 +11,7 @@ const zipdir = require('zip-dir');
 const FormData = require('form-data');
 const rimraf = require('rimraf');
 const SSH = require('simple-ssh');
+var qs = require("querystring");
 
 require('electron-reload')(__dirname);
 require('dotenv').config();
@@ -24,6 +25,7 @@ if (process.env.ENVIRONMENT === 'pi') {
 }
 
 let win = null;
+let jsonSynology = null;
 
 app.on('ready', function () {
 	frame = false;
@@ -114,8 +116,75 @@ app.on('ready', function () {
 	}
 
 	var scheduleVeraValuesExport = schedule.scheduleJob('*/10 * * * * *', function () {
-		//console.log('execute-vera-values-export cron fired!');
 		win.webContents.send("execute-vera-values-export");
+
+		//Tests
+		if (jsonSynology === null) {
+			var options = {
+				"method": "GET",
+				"hostname": "192.168.1.14",
+				"port": "5000",
+				"path": "xxxxx",
+				"headers": {
+					"content-type": "application/x-www-form-urlencoded",
+					"cache-control": "no-cache"
+				}
+			};
+
+			var req = http.request(options, function (res) {
+				var chunks = [];
+
+				res.on("data", function (chunk) {
+					chunks.push(chunk);
+				});
+
+				res.on("end", function () {
+					var body = Buffer.concat(chunks);
+					console.log(body.toString());
+					jsonSynology = JSON.parse(body);
+					console.log(jsonSynology.data.sid);
+
+				});
+			});
+
+			req.end();
+		}
+
+		if (jsonSynology !== null) {
+			var options1 = {
+				"method": "POST",
+				"hostname": "192.168.1.14",
+				"port": "5000",
+				"path": "/webapi/entry.cgi",
+				"headers": {
+					"content-type": "application/x-www-form-urlencoded",
+					"id": jsonSynology.data.sid
+				}
+			};
+
+			var req1 = http.request(options1, function (res) {
+				var chunks = [];
+
+				res.on("data", function (chunk) {
+					chunks.push(chunk);
+				});
+
+				res.on("end", function () {
+					var body = Buffer.concat(chunks);
+					console.log(body.toString());
+				});
+			});
+
+			req1.write(qs.stringify({
+				stop_when_error: 'false',
+				mode: '"sequential"',
+				compound: '[{"api":"SYNO.Core.Network.DHCPServer.ClientList","method":"list","version":2,"ifname":"eth0"}]',
+				api: 'SYNO.Entry.Request',
+				method: 'request',
+				version: '1'
+			}));
+			req1.end();
+		}
 	});
 });
 
