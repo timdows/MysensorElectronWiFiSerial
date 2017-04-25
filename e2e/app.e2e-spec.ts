@@ -1,10 +1,10 @@
-import { ScotchMusicPlayerPage } from './app.po';
+import { UpgradePage } from './app.po';
 
-describe('scotch-music-player App', function() {
-  let page: ScotchMusicPlayerPage;
+describe('upgrade App', () => {
+  let page: UpgradePage;
 
   beforeEach(() => {
-    page = new ScotchMusicPlayerPage();
+    page = new UpgradePage();
   });
 
   it('should display message saying app works', () => {

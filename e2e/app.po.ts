@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class ScotchMusicPlayerPage {
+export class UpgradePage {
   navigateTo() {
     return browser.get('/');
   }
