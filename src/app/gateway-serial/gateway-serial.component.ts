@@ -6,7 +6,7 @@ import { SerialDataService } from '../_services/index';
 @Component({
 	selector: 'app-gateway-serial',
 	templateUrl: './gateway-serial.component.pug',
-	styleUrls: ['./gateway-serial.component.css']
+	styleUrls: ['./gateway-serial.component.scss']
 })
 export class GatewaySerialComponent implements OnInit {
 	
@@ -15,7 +15,8 @@ export class GatewaySerialComponent implements OnInit {
 
 	constructor(
 		private changeDetectorRef: ChangeDetectorRef,
-		private serialDataService: SerialDataService) { }
+		private serialDataService: SerialDataService) {
+		}
 
 	ngOnInit() {
 		this.subscription = this.serialDataService
