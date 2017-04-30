@@ -1,5 +1,16 @@
-p vera3 stats works!
 pre {{localVera3Stats}}
-button(type="button", (click)="exportDatabaseManually()") Trigger database export (scp + zip)
+button(type="button", *ngIf="showExportButton", (click)="exportDatabaseManually()") Trigger database export (scp + zip)
 hr
-|{{exportFileStats | json}}
+table
+	thead
+		tr
+			th Date
+			th Size
+			th FileName
+			th OriginalFileName
+	tbody
+		tr(*ngFor="let stat of exportFileStats")
+			td {{stat.dateAdded}}
+			td {{stat.length}}
+			td {{stat.fileName}}
+			td {{stat.originalFileName}}

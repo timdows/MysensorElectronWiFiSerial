@@ -13,6 +13,7 @@ export class Vera3StatsComponent implements OnInit {
 	private settings: any;
 	localVera3Stats: any;
 	exportFileStats: any;
+	showExportButton: boolean = true;
 
 	constructor(
 		private environmentService: EnvironmentService,
@@ -33,6 +34,7 @@ export class Vera3StatsComponent implements OnInit {
 	}
 
 	exportDatabaseManually() {
+		this.showExportButton = false;
 		this.veraExportService.exportDatabase();
 	}
 

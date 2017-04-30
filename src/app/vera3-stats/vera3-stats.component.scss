@@ -1,0 +1,24 @@
+thead {
+        border-bottom: solid 1px black;
+        & > tr {
+            border-bottom: solid 1px black;
+            th {
+                font-weight: normal;
+                font-size: .7rem;
+                padding: .3rem;
+            }
+        }
+    }
+    tbody {
+        tr {
+            border-bottom: solid 1px lightGray;
+            td {
+                font-size: .7rem;
+                padding: .3rem;
+                &:last-of-type {
+                    padding-right: 0;
+                    text-align: right;
+                }
+            }
+        }
+}
