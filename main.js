@@ -16,11 +16,11 @@ var qs = require("querystring");
 require('electron-reload')(__dirname);
 require('dotenv').config();
 
-let SerialPort = null;
+//let SerialPort = null;
 let scp = null;
 if (process.env.ENVIRONMENT === 'pi') {
 	console.log("Environment: Pi");
-	SerialPort = require('serialport');
+	//SerialPort = require('serialport');
 	scp = require('./scp.js');
 }
 
@@ -93,20 +93,20 @@ app.on('ready', function () {
 
 	// Part that only runs on the pi itself
 	if (process.env.ENVIRONMENT === 'pi') {
-		var port = new SerialPort('/dev/serial0', {
-			baudRate: 9600,
-			parser: SerialPort.parsers.readline('\n')
-		});
+		// var port = new SerialPort('/dev/serial0', {
+		// 	baudRate: 9600,
+		// 	parser: SerialPort.parsers.readline('\n')
+		// });
 
-		port.on('open', function () { });
-		port.on('error', function (err) {
-			console.log("SerialPort error:", err.message);
-		});
+		// port.on('open', function () { });
+		// port.on('error', function (err) {
+		// 	console.log("SerialPort error:", err.message);
+		// });
 
-		port.on('data', function (data) {
-			//console.log("SerialPort data:", data);
-			win.webContents.send("push-serialdata", data);
-		});
+		// port.on('data', function (data) {
+		// 	//console.log("SerialPort data:", data);
+		// 	win.webContents.send("push-serialdata", data);
+		// });
 
 		// Set a job at 1 every night
 		var scheduleVeraDatabaseExport = schedule.scheduleJob('0 1 * * *', function () {
