@@ -7,7 +7,7 @@ import { HttpModule, RequestOptions, XHRBackend } from "@angular/http";
 import { NvD3Module } from 'angular2-nvd3-aot';
 
 import { Configuration } from './app.configuration';
-import { HttpService, IpcService, EnvironmentService, SerialDataService, VeraExportService } from './_services/index';
+import { HttpService, IpcService, EnvironmentService, SerialDataService, VeraExportService, DomoticzExportService } from './_services/index';
 
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
@@ -23,6 +23,10 @@ import { Vera3StatsComponent } from './vera3-stats/vera3-stats.component';
 // 	return new HttpService(backend, options, configuration);
 // }
 
+export function ipcServiceFactory(serialDataService: SerialDataService, veraExportService: VeraExportService, domoticzExportService: DomoticzExportService) {
+	return new IpcService(serialDataService, veraExportService, domoticzExportService);
+}
+
 const appRoutes: Routes = [
 	{ path: 'gateway-serial', component: GatewaySerialComponent },
 	{ path: 'nrf24-sniffer', component: Nrf24SnifferComponent },
@@ -31,12 +35,13 @@ const appRoutes: Routes = [
 	{ path: 'raspicam-stats', component: RaspicamStatsComponent },
 	{ path: 'heating-stats', component: HeatingStatsComponent },
 	{ path: 'vera3-stats', component: Vera3StatsComponent },
-	{ path: '',
+	{
+		path: '',
 		redirectTo: '/gateway-serial',
 		pathMatch: 'full'
 	},
 	//{ path: '**', component: PageNotFoundComponent }
-	];
+];
 
 @NgModule({
 	declarations: [
@@ -64,10 +69,16 @@ const appRoutes: Routes = [
 		// 	deps: [XHRBackend, RequestOptions, Configuration]
 		// },
 		Configuration,
-		IpcService,
+		//IpcService,
 		EnvironmentService,
 		SerialDataService,
-		VeraExportService
+		VeraExportService,
+		DomoticzExportService,
+		{
+			provide: IpcService,
+			useFactory: ipcServiceFactory,
+			deps: [SerialDataService, VeraExportService, DomoticzExportService]
+		}
 	],
 	bootstrap: [AppComponent]
 })

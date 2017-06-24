@@ -39,9 +39,10 @@ export class SevenSegmentsComponent implements OnInit {
 			.subscribe(data => {
 				this.stats = data.json();
 			});
-		this.http.get(`${this.configuration.ApiHost}/sevensegment/GetDebugCacheData.json`)
+		//this.http.get(`${this.configuration.ApiHost}/sevensegment/GetDebugCacheData.json`)
+		this.http.get(`${this.configuration.DomoticzHost}/json.htm?type=devices&rid=175`)
 			.subscribe(data => {
-				this.debug = data.json();
+				this.debug = data.json().result[0];
 			});
 	}
 

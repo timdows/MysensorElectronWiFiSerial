@@ -60,7 +60,7 @@ export class RaspicamStatsComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		this.ipcService.getRaspicamStats(this.raspicamSettings);
+		//this.ipcService.getRaspicamStats(this.raspicamSettings);
 
 		if (this.ticks % 3 === 0) {
 			this.http.get(`${this.configuration.SynologyHost}stats/index.php?forexport`)

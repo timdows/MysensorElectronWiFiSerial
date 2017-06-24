@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, forwardRef, Injector } from '@angular/core';
 import { Http } from "@angular/http";
 import { Observable, Subscription } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
@@ -9,6 +9,8 @@ import { IpcService } from "app/_services";
 @Injectable()
 export class VeraExportService {
 
+	private ipcService: IpcService;
+
 	private veraSettings: any = null;
 	private dataMineSettings: any;
 	private powerImport1: any;
@@ -17,10 +19,15 @@ export class VeraExportService {
 	private count: number = -1;
 
 	constructor(
+		private injector: Injector,
 		private http: Http,
-		private configuration: Configuration,
-		private ipcService: IpcService) {
-		this.init();
+		private configuration: Configuration
+		//@Inject(forwardRef(() => IpcService)) private ipcService: IpcService) {
+	) {
+		setTimeout(() => {
+			this.ipcService = injector.get(IpcService);
+			this.init();
+		}, 0);
 	}
 
 	// Export the raw database
@@ -46,11 +53,13 @@ export class VeraExportService {
 
 			this.ipcService.getHttpResponse(
 				this.veraSettings.veraIpAddress,
+				80,
 				`/port_3480/data_request?id=lr_dmData&start=${--epochStart}&stop=${++epochStop}&channel1=${this.powerImport1.dataMineChannel}`,
 				"receive-vera-export-values");
 
 			this.ipcService.getHttpResponse(
 				this.veraSettings.veraIpAddress,
+				80,
 				`/port_3480/data_request?id=lr_dmData&start=${--epochStart}&stop=${++epochStop}&channel1=${this.powerImport2.dataMineChannel}`,
 				"receive-vera-export-values");
 		}
@@ -58,6 +67,7 @@ export class VeraExportService {
 		// Get current wattage
 		this.ipcService.getHttpResponse(
 			this.veraSettings.veraIpAddress,
+			80,
 			`/port_3480/data_request?id=status&output_format=json&DeviceNum=${this.veraSettings.wattChannel}`,
 			"receive-vera-watt-value");
 	}

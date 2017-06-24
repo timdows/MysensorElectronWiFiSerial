@@ -4,7 +4,8 @@ const url = require('url');
 const fs = require('fs');
 const os = require('os');
 const username = require('username');
-const http = require('http');
+//const http = require('http');
+const http = require('http'), superagent = require('superagent');
 const https = require('https');
 const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
@@ -116,75 +117,76 @@ app.on('ready', function () {
 	}
 
 	var scheduleVeraValuesExport = schedule.scheduleJob('*/10 * * * * *', function () {
-		win.webContents.send("execute-vera-values-export");
+		//win.webContents.send("execute-vera-values-export");
+		win.webContents.send("execute-domoticz-values-export");
 
 		//Tests
-		if (jsonSynology === null) {
-			var options = {
-				"method": "GET",
-				"hostname": "192.168.1.14",
-				"port": "5000",
-				"path": "xxxxx",
-				"headers": {
-					"content-type": "application/x-www-form-urlencoded",
-					"cache-control": "no-cache"
-				}
-			};
+		// if (jsonSynology === null) {
+		// 	var options = {
+		// 		"method": "GET",
+		// 		"hostname": "192.168.1.14",
+		// 		"port": "5000",
+		// 		"path": "xxxxx",
+		// 		"headers": {
+		// 			"content-type": "application/x-www-form-urlencoded",
+		// 			"cache-control": "no-cache"
+		// 		}
+		// 	};
 
-			var req = http.request(options, function (res) {
-				var chunks = [];
+		// 	var req = http.request(options, function (res) {
+		// 		var chunks = [];
 
-				res.on("data", function (chunk) {
-					chunks.push(chunk);
-				});
+		// 		res.on("data", function (chunk) {
+		// 			chunks.push(chunk);
+		// 		});
 
-				res.on("end", function () {
-					var body = Buffer.concat(chunks);
-					console.log(body.toString());
-					jsonSynology = JSON.parse(body);
-					console.log(jsonSynology.data.sid);
+		// 		res.on("end", function () {
+		// 			var body = Buffer.concat(chunks);
+		// 			console.log(body.toString());
+		// 			jsonSynology = JSON.parse(body);
+		// 			console.log(jsonSynology.data.sid);
 
-				});
-			});
+		// 		});
+		// 	});
 
-			req.end();
-		}
+		// 	req.end();
+		// }
 
-		if (jsonSynology !== null) {
-			var options1 = {
-				"method": "POST",
-				"hostname": "192.168.1.14",
-				"port": "5000",
-				"path": "/webapi/entry.cgi",
-				"headers": {
-					"content-type": "application/x-www-form-urlencoded",
-					"id": jsonSynology.data.sid
-				}
-			};
+		// if (jsonSynology !== null) {
+		// 	var options1 = {
+		// 		"method": "POST",
+		// 		"hostname": "192.168.1.14",
+		// 		"port": "5000",
+		// 		"path": "/webapi/entry.cgi",
+		// 		"headers": {
+		// 			"content-type": "application/x-www-form-urlencoded",
+		// 			"id": jsonSynology.data.sid
+		// 		}
+		// 	};
 
-			var req1 = http.request(options1, function (res) {
-				var chunks = [];
+		// 	var req1 = http.request(options1, function (res) {
+		// 		var chunks = [];
 
-				res.on("data", function (chunk) {
-					chunks.push(chunk);
-				});
+		// 		res.on("data", function (chunk) {
+		// 			chunks.push(chunk);
+		// 		});
 
-				res.on("end", function () {
-					var body = Buffer.concat(chunks);
-					console.log(body.toString());
-				});
-			});
+		// 		res.on("end", function () {
+		// 			var body = Buffer.concat(chunks);
+		// 			console.log(body.toString());
+		// 		});
+		// 	});
 
-			req1.write(qs.stringify({
-				stop_when_error: 'false',
-				mode: '"sequential"',
-				compound: '[{"api":"SYNO.Core.Network.DHCPServer.ClientList","method":"list","version":2,"ifname":"eth0"}]',
-				api: 'SYNO.Entry.Request',
-				method: 'request',
-				version: '1'
-			}));
-			req1.end();
-		}
+		// 	req1.write(qs.stringify({
+		// 		stop_when_error: 'false',
+		// 		mode: '"sequential"',
+		// 		compound: '[{"api":"SYNO.Core.Network.DHCPServer.ClientList","method":"list","version":2,"ifname":"eth0"}]',
+		// 		api: 'SYNO.Entry.Request',
+		// 		method: 'request',
+		// 		version: '1'
+		// 	}));
+		// 	req1.end();
+		// }
 	});
 });
 
@@ -311,31 +313,17 @@ ipcMain.on("get-vera3-stats", (event, settings) => {
 	}).start();
 });
 
+const getHttpResponseAndSendViaIpc = async function(url, ipcName){
+  const res = await superagent.get(url);
+//   console.log(res.text)
+	let json = JSON.parse(res.text);
+	win.webContents.send(ipcName, json);
+}
+
 // Used to handle CORS
-ipcMain.on("get-http-response", (event, host, path, ipcName) => {
-	//console.log("get-http-response", host, path, ipcName);
-
-	http.get({
-		host: host,
-		port: 80,
-		path: path
-	}, function (response) {
-		var data = '';
-
-		response.on('data', function (d) {
-			data += d;
-		});
-
-		response.on('end', function () {
-			var json = JSON.parse(data);
-			//console.log("get-raspicam-stats", json);
-			win.webContents.send(ipcName, json);
-		});
-
-		response.on('error', function (err) {
-			console.log("get-http-response: " + err.message);
-		});
-	});
+ipcMain.on("get-http-response", (event, host, port, path, ipcName) => {
+	// console.log("get-http-response", host, path, ipcName);
+	getHttpResponseAndSendViaIpc('http://' + host + ":" + port + "/" + path, ipcName);
 });
 
 ipcMain.on("close-electron", (event, arg) => {

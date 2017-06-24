@@ -16,3 +16,4 @@ h2 {{stats.watt}} watt
 div Watt DateTime added: {{debug?.watt?.dateTimeAdded | date:'dd-MM-y HH:mm:ss'}}
 div High {{debug?.high?.label}} DateTime added: {{debug?.high?.dateTimeAdded | date:'dd-MM-y HH:mm:ss'}}
 div Low {{debug?.low?.label}} DateTime added: {{debug?.low?.dateTimeAdded | date:'dd-MM-y HH:mm:ss'}}
+pre {{debug | json}}
