@@ -79,3 +79,5 @@ testem.log
 Thumbs.db
 
 app.configuration.ts
+Exporter/bin
+Exporter/obj
