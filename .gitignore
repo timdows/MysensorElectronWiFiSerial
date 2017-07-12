@@ -81,3 +81,6 @@ Thumbs.db
 app.configuration.ts
 Exporter/bin
 Exporter/obj
+/Exporter/.vs/Exporter/v15
+/Exporter/appsettings.json
+/Exporter/.vs/config
