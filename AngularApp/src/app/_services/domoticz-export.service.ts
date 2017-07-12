@@ -50,11 +50,11 @@ export class DomoticzExportService {
 		// 	`/port_3480/data_request?id=status&output_format=json&DeviceNum=${this.veraSettings.wattChannel}`,
 		// 	"receive-vera-watt-value");
 		// Get current wattage
-		this.ipcService.getHttpResponse(
-			this.domoticzSettings.host,
-			this.domoticzSettings.port,
-			`json.htm?type=devices&rid=${this.domoticzSettings.wattIdx}`,
-			"receive-domoticz-watt-value");
+		// this.ipcService.getHttpResponse(
+		// 	this.domoticzSettings.host,
+		// 	this.domoticzSettings.port,
+		// 	`json.htm?type=devices&rid=${this.domoticzSettings.wattIdx}`,
+		// 	"receive-domoticz-watt-value");
 	}
 
 	// Receives the watt json object from domoticz via IPC
