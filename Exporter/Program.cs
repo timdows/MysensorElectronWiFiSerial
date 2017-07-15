@@ -20,8 +20,12 @@ namespace Exporter
         public async Task Run()
         {
 			await GetSettings();
-			await GetCurrentWattValue();
-        }
+			while (true)
+			{
+				await GetCurrentWattValue();
+				await Task.Delay(5000);
+			}
+		}
 
 		private async Task GetSettings()
 		{
