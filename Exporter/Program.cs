@@ -1,8 +1,10 @@
 ﻿using Exporter.Models.Settings;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Serilog;
+using System;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Exporter
@@ -11,51 +13,53 @@ namespace Exporter
     {
         public static void Main(string[] args)
         {
-			new Program().Run().Wait();
+			IServiceCollection serviceCollection = new ServiceCollection();
+			ConfigureServices(serviceCollection).Wait();
+			IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+
+			var app = serviceProvider.GetService<Application>();
+			//app.Run().Wait();
+			Task.Run(() => app.Run()).Wait();
 		}
 
-		private HouseDBSettings _houseDBSettings;
-        private DomoticzSettings _domoticzSettings;
+		//public IConfigurationRoot Configuration { get; }
 
-        public async Task Run()
-        {
-			await GetSettings();
-			while (true)
-			{
-				await GetCurrentWattValue();
-				await Task.Delay(5000);
-			}
+		private static async Task ConfigureServices(IServiceCollection services)
+		{
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Debug()
+				.Enrich.FromLogContext()
+				.WriteTo.LiterateConsole()
+				.WriteTo.RollingFile("logs/log-{Date}.txt")
+				.CreateLogger();
+
+			// Support typed Options
+			services.AddOptions();
+
+			var houseDBSettings = await GetHouseDBSettings();
+			var domoticzSettings = await GetDomoticzSettings(houseDBSettings);
+
+			services.AddSingleton(houseDBSettings);
+			services.AddSingleton(domoticzSettings);
+
+			services.AddTransient<Application>();
 		}
 
-		private async Task GetSettings()
+		private static async Task<HouseDBSettings> GetHouseDBSettings()
 		{
 			// Get settings from appconfig.json
 			var appsettingsString = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));
 			var appsettings = JsonConvert.DeserializeObject<dynamic>(appsettingsString);
-			_houseDBSettings = JsonConvert.DeserializeObject<HouseDBSettings>(appsettings.HouseDBSettings.ToString());
-
-			// Get settings from HouseDB server
-			using (var client = new HttpClient())
-			{
-				var response = await client.GetStringAsync(_houseDBSettings.Url + "settings/GetDomoticzSettings.json");
-				_domoticzSettings = JsonConvert.DeserializeObject<DomoticzSettings>(response);
-			}
+			return JsonConvert.DeserializeObject<HouseDBSettings>(appsettings.HouseDBSettings.ToString());
 		}
 
-		private async Task GetCurrentWattValue()
+		private static async Task<DomoticzSettings> GetDomoticzSettings(HouseDBSettings houseDBSettings)
 		{
+			// Get settings from server
 			using (var client = new HttpClient())
 			{
-				// Get the watt value
-				var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/json.htm?type=devices&rid={_domoticzSettings.WattIdx}";
-				var response = await client.GetStringAsync(url);
-				var data = JsonConvert.DeserializeObject<dynamic>(response);
-				string usage = data.result[0].Usage.ToString();
-				var watt = usage.Replace(" Watt", string.Empty);
-
-				// Post it to the HouseDB server
-				url = $"{_houseDBSettings.Url}/Exporter/InsertCurrentWattValue";
-				await client.PostAsync(url, new StringContent(watt, Encoding.UTF8, "application/json"));
+				var response = await client.GetStringAsync(houseDBSettings.Url + "settings/GetDomoticzSettings.json");
+				return JsonConvert.DeserializeObject<DomoticzSettings>(response);
 			}
 		}
 
