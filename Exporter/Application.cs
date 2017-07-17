@@ -61,6 +61,7 @@ namespace Exporter
 			if (DateTime.Now.Hour == 0 && (DateTime.Now - _lastExportDatabase).Hours > 23)
 			{
 				_lastExportDatabase = DateTime.Now;
+				Log.Debug("Starting ExportDatabase");
 
 				using (var client = new HttpClient())
 				{
@@ -74,10 +75,11 @@ namespace Exporter
 
 						using (var contentStream = await response.Content.ReadAsStreamAsync())
 						{
-							//await client.PostAsync("", new FileContent()
-							//var a = contentStream.
+							var directory = Path.Combine(Directory.GetCurrentDirectory(), "../exports");
+							var file = Path.Combine(directory, $"{DateTime.Today.ToString("yyyy-MM-ddTHH:mm")}.db");
+							Log.Debug($"Writing to file {file}");
 
-							using (var fileStream = File.Create("exports/1.db"))
+							using (var fileStream = File.Create(file))
 							using (var reader = new StreamReader(contentStream))
 							{
 								contentStream.CopyTo(fileStream);
