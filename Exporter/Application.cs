@@ -13,21 +13,26 @@ namespace Exporter
     {
 		private HouseDBSettings _houseDBSettings;
 		private DomoticzSettings _domoticzSettings;
+		private DateTime _lastExportDatabase;
 
 		public Application(HouseDBSettings houseDBSettings, DomoticzSettings domoticzSettings)
 		{
 			_houseDBSettings = houseDBSettings;
 			_domoticzSettings = domoticzSettings;
+			_lastExportDatabase = DateTime.Today.AddDays(-1);
 		}
 
 		public async Task Run()
 		{
 			while (true)
 			{
-				await ExportDatabase();
-				await GetCurrentWattValue();
-				await Task.Delay(5000);
+				var exportDatabase = ExportDatabase();
+				var getCurrentWattValue = GetCurrentWattValue();
 
+				await Task.WhenAll(
+					exportDatabase,
+					getCurrentWattValue,
+					Task.Delay(5000));
 			}
 		}
 
@@ -52,28 +57,34 @@ namespace Exporter
 
 		private async Task ExportDatabase()
 		{
-			using (var client = new HttpClient())
+			// Check if we should export
+			if (DateTime.Now.Hour == 0 && (DateTime.Now - _lastExportDatabase).Hours > 23)
 			{
-				client.Timeout = TimeSpan.FromMinutes(1);
-				//var database = client.GetStreamAsync($"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php");
+				_lastExportDatabase = DateTime.Now;
 
-				var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php";
-				using (var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result)
+				using (var client = new HttpClient())
 				{
-					response.EnsureSuccessStatusCode();
+					client.Timeout = TimeSpan.FromMinutes(1);
+					//var database = client.GetStreamAsync($"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php");
 
-					using (var contentStream = await response.Content.ReadAsStreamAsync())
+					var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php";
+					using (var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result)
 					{
-						//await client.PostAsync("", new FileContent()
-						//var a = contentStream.
+						response.EnsureSuccessStatusCode();
 
-						using (var fileStream = File.Create("exports/1.db"))
-						using (var reader = new StreamReader(contentStream))
+						using (var contentStream = await response.Content.ReadAsStreamAsync())
 						{
-							contentStream.CopyTo(fileStream);
-							fileStream.Flush();
+							//await client.PostAsync("", new FileContent()
+							//var a = contentStream.
 
-							//client.PostAsync("", fileStream);
+							using (var fileStream = File.Create("exports/1.db"))
+							using (var reader = new StreamReader(contentStream))
+							{
+								contentStream.CopyTo(fileStream);
+								fileStream.Flush();
+
+								//client.PostAsync("", fileStream);
+							}
 						}
 					}
 				}
