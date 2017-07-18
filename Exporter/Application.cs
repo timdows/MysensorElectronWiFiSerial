@@ -1,4 +1,5 @@
-﻿using Exporter.Models.Settings;
+﻿using Exporter.Models;
+using Exporter.Models.Settings;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -27,7 +28,7 @@ namespace Exporter
 			while (true)
 			{
 				var exportDatabase = ExportDatabase();
-				var getCurrentWattValue = GetCurrentWattValue();
+				var getCurrentWattValue = GetCurrentPowerValues();
 
 				await Task.WhenAll(
 					exportDatabase,
@@ -36,22 +37,32 @@ namespace Exporter
 			}
 		}
 
-		private async Task GetCurrentWattValue()
+		private async Task GetCurrentPowerValues()
 		{
 			using (var client = new HttpClient())
 			{
-				// Get the watt value
+				// Get the values
 				var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/json.htm?type=devices&rid={_domoticzSettings.WattIdx}";
 				var response = await client.GetStringAsync(url);
 				var data = JsonConvert.DeserializeObject<dynamic>(response);
-				string usage = data.result[0].Usage.ToString();
-				var watt = usage.Replace(" Watt", string.Empty);
 
-				Log.Debug(usage);
+				string wattString = data.result[0].Usage.ToString().Replace(" Watt", string.Empty);
+				var watt = int.Parse(wattString);
+
+				string counterTodayString = data.result[0].CounterToday.ToString().Replace(" kWh", string.Empty);
+				double counterToday = double.Parse(counterTodayString);
+
+				var exporterCurrentPowerValues = new ExporterCurrentPowerValues
+				{
+					CounterToday = counterToday,
+					Watt = watt
+				};
 
 				// Post it to the HouseDB server
 				url = $"{_houseDBSettings.Url}/Exporter/InsertCurrentWattValue";
-				await client.PostAsync(url, new StringContent(watt, Encoding.UTF8, "application/json"));
+				var postBody = JsonConvert.SerializeObject(exporterCurrentPowerValues);
+				Log.Debug(postBody);
+				await client.PostAsync(url, new StringContent(postBody, Encoding.UTF8, "application/json"));
 			}
 		}
 
