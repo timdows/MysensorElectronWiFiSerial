@@ -59,7 +59,7 @@ namespace Exporter
 				};
 
 				// Post it to the HouseDB server
-				url = $"{_houseDBSettings.Url}/Exporter/InsertCurrentWattValue";
+				url = $"{_houseDBSettings.Url}Exporter/InsertCurrentPowerValues";
 				var postBody = JsonConvert.SerializeObject(exporterCurrentPowerValues);
 				Log.Debug(postBody);
 				await client.PostAsync(url, new StringContent(postBody, Encoding.UTF8, "application/json"));
