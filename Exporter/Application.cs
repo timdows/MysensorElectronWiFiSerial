@@ -3,6 +3,7 @@ using Exporter.Models.Settings;
 using Newtonsoft.Json;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -29,10 +30,12 @@ namespace Exporter
 			{
 				var exportDatabase = ExportDatabase();
 				var getCurrentWattValue = GetCurrentPowerValues();
+				var exportDomoticzP1Consumption = ExportDomoticzP1Consumption();
 
 				await Task.WhenAll(
 					exportDatabase,
 					getCurrentWattValue,
+					exportDomoticzP1Consumption,
 					Task.Delay(5000));
 			}
 		}
@@ -62,6 +65,23 @@ namespace Exporter
 				url = $"{_houseDBSettings.Url}Exporter/InsertCurrentPowerValues";
 				var postBody = JsonConvert.SerializeObject(exporterCurrentPowerValues);
 				Log.Debug(postBody);
+				await client.PostAsync(url, new StringContent(postBody, Encoding.UTF8, "application/json"));
+			}
+		}
+
+		private async Task ExportDomoticzP1Consumption()
+		{
+			using (var client = new HttpClient())
+			{
+				// Get the list with values
+				var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/json.htm?type=graph&sensor=counter&idx={_domoticzSettings.WattIdx}&range=year";
+				var response = await client.GetStringAsync(url);
+				var data = JsonConvert.DeserializeObject<dynamic>(response);
+				var resultList = data.result;
+
+				// Post it away
+				url = $"{_houseDBSettings.Url}Exporter/InsertDomoticzP1Consumption";
+				var postBody = JsonConvert.SerializeObject(resultList);
 				await client.PostAsync(url, new StringContent(postBody, Encoding.UTF8, "application/json"));
 			}
 		}
