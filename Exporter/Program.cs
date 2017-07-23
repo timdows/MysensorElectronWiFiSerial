@@ -1,10 +1,10 @@
-﻿using Exporter.Models.Settings;
+﻿using Exporter.HouseDBService;
+using Exporter.Models.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Exporter
@@ -18,11 +18,8 @@ namespace Exporter
 			IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
 			var app = serviceProvider.GetService<Application>();
-			//app.Run().Wait();
 			Task.Run(() => app.Run()).Wait();
 		}
-
-		//public IConfigurationRoot Configuration { get; }
 
 		private static async Task ConfigureServices(IServiceCollection services)
 		{
@@ -37,11 +34,15 @@ namespace Exporter
 			services.AddOptions();
 
 			var houseDBSettings = await GetHouseDBSettings();
-			var domoticzSettings = await GetDomoticzSettings(houseDBSettings);
-
 			services.AddSingleton(houseDBSettings);
-			services.AddSingleton(domoticzSettings);
 
+			// Get other settings via API
+			using (var client = new HouseDBAPI(new Uri(houseDBSettings.Url)))
+			{
+				var domoticzSettings = await client.SettingsGetDomoticzSettingsGetAsync();
+				services.AddSingleton(domoticzSettings);
+			}
+			
 			services.AddTransient<Application>();
 		}
 
@@ -52,16 +53,5 @@ namespace Exporter
 			var appsettings = JsonConvert.DeserializeObject<dynamic>(appsettingsString);
 			return JsonConvert.DeserializeObject<HouseDBSettings>(appsettings.HouseDBSettings.ToString());
 		}
-
-		private static async Task<DomoticzSettings> GetDomoticzSettings(HouseDBSettings houseDBSettings)
-		{
-			// Get settings from server
-			using (var client = new HttpClient())
-			{
-				var response = await client.GetStringAsync(houseDBSettings.Url + "settings/GetDomoticzSettings.json");
-				return JsonConvert.DeserializeObject<DomoticzSettings>(response);
-			}
-		}
-
 	}
 }

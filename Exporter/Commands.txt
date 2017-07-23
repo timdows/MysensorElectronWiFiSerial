@@ -1,0 +1,4 @@
+﻿autorest -Namespace Exporter.HouseDBService -CodeGenerator CSharp -Modeler Swagger -Input "C:\Users\tim\Downloads\swagger.json"
+
+
+AutoRest -Input http://localhost:5002/swagger/v1/swagger.json -Namespace Exporter.HouseDBService -OutputDirectory HouseDBService

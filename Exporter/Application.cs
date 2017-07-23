@@ -1,4 +1,6 @@
-﻿using Exporter.Models;
+﻿using Exporter.Exporters;
+using Exporter.HouseDBService.Models;
+using Exporter.Models;
 using Exporter.Models.Settings;
 using Newtonsoft.Json;
 using Serilog;
@@ -31,11 +33,13 @@ namespace Exporter
 				var exportDatabase = ExportDatabase();
 				var getCurrentWattValue = GetCurrentPowerValues();
 				var exportDomoticzP1Consumption = ExportDomoticzP1Consumption();
+				var exportKwhDeviceValues = new ExportKwhDeviceValues(_houseDBSettings, _domoticzSettings);
 
 				await Task.WhenAll(
-					exportDatabase,
-					getCurrentWattValue,
-					exportDomoticzP1Consumption,
+					exportKwhDeviceValues.DoExport(),
+					//exportDatabase,
+					//getCurrentWattValue,
+					//exportDomoticzP1Consumption,
 					Task.Delay(5000));
 			}
 		}
