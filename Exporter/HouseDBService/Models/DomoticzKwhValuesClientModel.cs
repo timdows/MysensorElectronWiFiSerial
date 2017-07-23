@@ -25,10 +25,10 @@ namespace Exporter.HouseDBService.Models
         /// Initializes a new instance of the DomoticzKwhValuesClientModel
         /// class.
         /// </summary>
-        public DomoticzKwhValuesClientModel(Device device = default(Device), IList<DomoticzKwhValue> domoticzKwhValues = default(IList<DomoticzKwhValue>))
+        public DomoticzKwhValuesClientModel(Device device = default(Device), IList<DomoticzKwhUsage> domoticzKwhUsages = default(IList<DomoticzKwhUsage>))
         {
             Device = device;
-            DomoticzKwhValues = domoticzKwhValues;
+            DomoticzKwhUsages = domoticzKwhUsages;
             CustomInit();
         }
 
@@ -44,8 +44,8 @@ namespace Exporter.HouseDBService.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "domoticzKwhValues")]
-        public IList<DomoticzKwhValue> DomoticzKwhValues { get; set; }
+        [JsonProperty(PropertyName = "domoticzKwhUsages")]
+        public IList<DomoticzKwhUsage> DomoticzKwhUsages { get; set; }
 
     }
 }

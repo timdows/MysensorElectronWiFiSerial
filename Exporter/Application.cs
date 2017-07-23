@@ -36,10 +36,10 @@ namespace Exporter
 				var exportKwhDeviceValues = new ExportKwhDeviceValues(_houseDBSettings, _domoticzSettings);
 
 				await Task.WhenAll(
+					exportDatabase,
+					getCurrentWattValue,
+					exportDomoticzP1Consumption,
 					exportKwhDeviceValues.DoExport(),
-					//exportDatabase,
-					//getCurrentWattValue,
-					//exportDomoticzP1Consumption,
 					Task.Delay(5000));
 			}
 		}

@@ -3,6 +3,7 @@ using Exporter.HouseDBService.Models;
 using Exporter.Models.Settings;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,23 +15,31 @@ namespace Exporter.Exporters
     {
 		private HouseDBSettings _houseDBSettings;
 		private DomoticzSettings _domoticzSettings;
+		private DateTime _lastExportDateTime;
 
 		public ExportKwhDeviceValues(HouseDBSettings houseDBSettings, DomoticzSettings domoticzSettings)
 		{
 			_houseDBSettings = houseDBSettings;
 			_domoticzSettings = domoticzSettings;
+			_lastExportDateTime = DateTime.Today.AddDays(-1);
 		}
 
 		public async Task DoExport()
 		{
-			using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
+			if (DateTime.Now.Hour == 0 && (DateTime.Now - _lastExportDateTime).Hours > 23)
 			{
-				var devices = await api.DeviceGetAllKwhExportDevicesGetAsync();
-				
-				foreach (var device in devices)
+				_lastExportDateTime = DateTime.Now;
+				Log.Debug("Starting ExportKwhDeviceValues - DoExport");
+
+				using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
 				{
-					var clientModel = await GetDomoticzKwhValuesClientModel(device);
-					await api.ExporterInsertDomoticzKwhValuesPostAsync(clientModel);
+					var devices = await api.DeviceGetAllKwhExportDevicesGetAsync();
+				
+					foreach (var device in devices)
+					{
+						var clientModel = await GetDomoticzKwhValuesClientModel(device);
+						await api.ExporterInsertDomoticzKwhValuesPostAsync(clientModel);
+					}
 				}
 			}
 		}
@@ -45,12 +54,12 @@ namespace Exporter.Exporters
 				JArray resultList = data.result;
 
 				// Cast resultList to objects
-				var values = resultList.ToObject<List<DomoticzKwhValue>>();
+				var values = resultList.ToObject<List<DomoticzKwhUsage>>();
 
 				var clientModel = new DomoticzKwhValuesClientModel
 				{
 					Device = device,
-					DomoticzKwhValues = values
+					DomoticzKwhUsages = values
 				};
 
 				return clientModel;

@@ -8,24 +8,26 @@ namespace Exporter.HouseDBService.Models
     using Newtonsoft.Json;
     using System.Linq;
 
-    public partial class DomoticzKwhValue
+    public partial class DomoticzKwhUsage
     {
         /// <summary>
-        /// Initializes a new instance of the DomoticzKwhValue class.
+        /// Initializes a new instance of the DomoticzKwhUsage class.
         /// </summary>
-        public DomoticzKwhValue()
+        public DomoticzKwhUsage()
         {
           CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the DomoticzKwhValue class.
+        /// Initializes a new instance of the DomoticzKwhUsage class.
         /// </summary>
-        public DomoticzKwhValue(double? c = default(double?), System.DateTime? d = default(System.DateTime?), double? v = default(double?))
+        public DomoticzKwhUsage(double? c = default(double?), System.DateTime? d = default(System.DateTime?), double? v = default(double?), double? usage = default(double?), System.DateTime? date = default(System.DateTime?))
         {
             C = c;
             D = d;
             V = v;
+            Usage = usage;
+            Date = date;
             CustomInit();
         }
 
@@ -48,6 +50,16 @@ namespace Exporter.HouseDBService.Models
         /// </summary>
         [JsonProperty(PropertyName = "v")]
         public double? V { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "usage")]
+        public double? Usage { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "date")]
+        public System.DateTime? Date { get; private set; }
 
     }
 }
