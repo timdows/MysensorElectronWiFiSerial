@@ -28,15 +28,17 @@ namespace Exporter
 
 		public async Task Run()
 		{
+			Log.Information("Starting Application.Run()");
+
 			while (true)
 			{
-				var exportDatabase = ExportDatabase();
+				//var exportDatabase = ExportDatabase();
 				var exportDomoticzP1Consumption = ExportDomoticzP1Consumption();
 				var exportKwhDeviceValues = new ExportKwhDeviceValues(_houseDBSettings, _domoticzSettings);
 				var exportValuesForCaching = new ExportValuesForCaching(_houseDBSettings, _domoticzSettings);
 
 				await Task.WhenAll(
-					exportDatabase,
+					//exportDatabase,
 					exportDomoticzP1Consumption,
 					exportKwhDeviceValues.DoExport(),
 					exportValuesForCaching.DoExport(),
@@ -46,6 +48,8 @@ namespace Exporter
 
 		private async Task ExportDomoticzP1Consumption()
 		{
+			Log.Information("Starting ExportDomoticzP1Consumption()");
+
 			using (var client = new HttpClient())
 			{
 				// Get the list with values

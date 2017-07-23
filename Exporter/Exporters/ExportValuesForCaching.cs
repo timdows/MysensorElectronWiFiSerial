@@ -2,6 +2,7 @@
 using Exporter.HouseDBService.Models;
 using Exporter.Models.Settings;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -24,18 +25,23 @@ namespace Exporter.Exporters
 
 		public async Task DoExport()
 		{
+			Log.Information("Starting ExportValuesForCaching.DoExport()");
+
 			using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
 			{
 				var devices = await api.DeviceGetAllDevicesForCachingValuesGetAsync();
 				var clientModel = new DomoticzValuesForCachingClientModel
 				{
 					DateTime = DateTime.Now,
-					P1Values = 
 					DomoticzValuesForCachingValues = new List<DomoticzValuesForCachingValue>()
 				};
 
 				using (var client = new HttpClient())
 				{
+					// Get the values for P1 (smart home meter)
+					clientModel.P1Values = await GetP1Values(client);
+
+					// Get the values to cache for every device
 					foreach (var device in devices)
 					{
 						var value = await GetDataValues(device, client);
