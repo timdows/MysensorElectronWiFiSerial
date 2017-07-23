@@ -25,9 +25,10 @@ namespace Exporter.HouseDBService.Models
         /// Initializes a new instance of the
         /// DomoticzValuesForCachingClientModel class.
         /// </summary>
-        public DomoticzValuesForCachingClientModel(System.DateTime? dateTime = default(System.DateTime?), IList<DomoticzValuesForCachingValue> domoticzValuesForCachingValues = default(IList<DomoticzValuesForCachingValue>))
+        public DomoticzValuesForCachingClientModel(System.DateTime? dateTime = default(System.DateTime?), DomoticzValuesForCachingValue p1Values = default(DomoticzValuesForCachingValue), IList<DomoticzValuesForCachingValue> domoticzValuesForCachingValues = default(IList<DomoticzValuesForCachingValue>))
         {
             DateTime = dateTime;
+            P1Values = p1Values;
             DomoticzValuesForCachingValues = domoticzValuesForCachingValues;
             CustomInit();
         }
@@ -41,6 +42,11 @@ namespace Exporter.HouseDBService.Models
         /// </summary>
         [JsonProperty(PropertyName = "dateTime")]
         public System.DateTime? DateTime { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "p1Values")]
+        public DomoticzValuesForCachingValue P1Values { get; set; }
 
         /// <summary>
         /// </summary>

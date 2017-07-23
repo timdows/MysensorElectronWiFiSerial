@@ -30,6 +30,7 @@ namespace Exporter.Exporters
 				var clientModel = new DomoticzValuesForCachingClientModel
 				{
 					DateTime = DateTime.Now,
+					P1Values = 
 					DomoticzValuesForCachingValues = new List<DomoticzValuesForCachingValue>()
 				};
 
@@ -44,6 +45,21 @@ namespace Exporter.Exporters
 
 				await api.ExporterInsertValuesForCachingPostAsync(clientModel);
 			}
+		}
+
+		private async Task<DomoticzValuesForCachingValue> GetP1Values(HttpClient client)
+		{
+			var watt = await GetDataResultValue(_domoticzSettings.WattIdx.Value, "Usage", " Watt", client);
+			var kwh = await GetDataResultValue(_domoticzSettings.WattIdx.Value, "CounterToday", " kWh", client);
+
+			var domoticzValuesForCachingValue = new DomoticzValuesForCachingValue
+			{
+				DeviceID = 10, // PowerImport1 device
+				CurrentWattValue = watt,
+				TodayKwhUsage = kwh
+			};
+
+			return domoticzValuesForCachingValue;
 		}
 
 		private async Task<DomoticzValuesForCachingValue> GetDataValues(Device device, HttpClient client)
