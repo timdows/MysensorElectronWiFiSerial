@@ -66,6 +66,28 @@ namespace Exporter.HouseDBService
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            public static IList<Device> DeviceGetAllDevicesForCachingValuesGet(this IHouseDBAPI operations)
+            {
+                return operations.DeviceGetAllDevicesForCachingValuesGetAsync().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<IList<Device>> DeviceGetAllDevicesForCachingValuesGetAsync(this IHouseDBAPI operations, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.DeviceGetAllDevicesForCachingValuesGetWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='wattValue'>
             /// </param>
             public static void ExporterInsertCurrentWattValuePost(this IHouseDBAPI operations, int? wattValue = default(int?))
@@ -153,6 +175,29 @@ namespace Exporter.HouseDBService
             public static async Task ExporterInsertDomoticzKwhValuesPostAsync(this IHouseDBAPI operations, DomoticzKwhValuesClientModel clientModel = default(DomoticzKwhValuesClientModel), CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.ExporterInsertDomoticzKwhValuesPostWithHttpMessagesAsync(clientModel, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='clientModel'>
+            /// </param>
+            public static void ExporterInsertValuesForCachingPost(this IHouseDBAPI operations, DomoticzValuesForCachingClientModel clientModel = default(DomoticzValuesForCachingClientModel))
+            {
+                operations.ExporterInsertValuesForCachingPostAsync(clientModel).GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='clientModel'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task ExporterInsertValuesForCachingPostAsync(this IHouseDBAPI operations, DomoticzValuesForCachingClientModel clientModel = default(DomoticzValuesForCachingClientModel), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.ExporterInsertValuesForCachingPostWithHttpMessagesAsync(clientModel, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <param name='operations'>
@@ -340,6 +385,29 @@ namespace Exporter.HouseDBService
             public static async Task SevenSegmentGetDebugCacheDatajsonGetAsync(this IHouseDBAPI operations, CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.SevenSegmentGetDebugCacheDatajsonGetWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='postGetKwhYearUsage'>
+            /// </param>
+            public static void StatisticsGetKwhYearUsagePost(this IHouseDBAPI operations, PostGetKwhYearUsage postGetKwhYearUsage = default(PostGetKwhYearUsage))
+            {
+                operations.StatisticsGetKwhYearUsagePostAsync(postGetKwhYearUsage).GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='postGetKwhYearUsage'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task StatisticsGetKwhYearUsagePostAsync(this IHouseDBAPI operations, PostGetKwhYearUsage postGetKwhYearUsage = default(PostGetKwhYearUsage), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.StatisticsGetKwhYearUsagePostWithHttpMessagesAsync(postGetKwhYearUsage, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <param name='operations'>

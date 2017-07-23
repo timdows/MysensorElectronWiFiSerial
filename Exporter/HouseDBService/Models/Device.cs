@@ -21,18 +21,16 @@ namespace Exporter.HouseDBService.Models
         /// <summary>
         /// Initializes a new instance of the Device class.
         /// </summary>
-        public Device(string name = default(string), int? dataMineChannel = default(int?), int? veraChannel = default(int?), int? domoticzIdx = default(int?), bool? isForKwhImport = default(bool?), bool? isForTemperatureImport = default(bool?), long? id = default(long?), System.DateTime? dateDeleted = default(System.DateTime?), bool? isNew = default(bool?), bool? isDeleted = default(bool?))
+        public Device(string name = default(string), int? dataMineChannel = default(int?), int? veraChannel = default(int?), int? domoticzKwhIdx = default(int?), int? domoticzWattIdx = default(int?), bool? isForKwhImport = default(bool?), bool? isForTemperatureImport = default(bool?), long? id = default(long?))
         {
             Name = name;
             DataMineChannel = dataMineChannel;
             VeraChannel = veraChannel;
-            DomoticzIdx = domoticzIdx;
+            DomoticzKwhIdx = domoticzKwhIdx;
+            DomoticzWattIdx = domoticzWattIdx;
             IsForKwhImport = isForKwhImport;
             IsForTemperatureImport = isForTemperatureImport;
             Id = id;
-            DateDeleted = dateDeleted;
-            IsNew = isNew;
-            IsDeleted = isDeleted;
             CustomInit();
         }
 
@@ -58,8 +56,13 @@ namespace Exporter.HouseDBService.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "domoticzIdx")]
-        public int? DomoticzIdx { get; set; }
+        [JsonProperty(PropertyName = "domoticzKwhIdx")]
+        public int? DomoticzKwhIdx { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "domoticzWattIdx")]
+        public int? DomoticzWattIdx { get; set; }
 
         /// <summary>
         /// </summary>
@@ -75,21 +78,6 @@ namespace Exporter.HouseDBService.Models
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public long? Id { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "dateDeleted")]
-        public System.DateTime? DateDeleted { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "isNew")]
-        public bool? IsNew { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "isDeleted")]
-        public bool? IsDeleted { get; private set; }
 
     }
 }

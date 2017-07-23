@@ -50,6 +50,14 @@ namespace Exporter.HouseDBService
         /// </param>
         Task<HttpOperationResponse<IList<Device>>> DeviceGetAllKwhExportDevicesGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<IList<Device>>> DeviceGetAllDevicesForCachingValuesGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
         /// <param name='wattValue'>
         /// </param>
         /// <param name='customHeaders'>
@@ -89,6 +97,16 @@ namespace Exporter.HouseDBService
         /// The cancellation token.
         /// </param>
         Task<HttpOperationResponse> ExporterInsertDomoticzKwhValuesPostWithHttpMessagesAsync(DomoticzKwhValuesClientModel clientModel = default(DomoticzKwhValuesClientModel), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='clientModel'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> ExporterInsertValuesForCachingPostWithHttpMessagesAsync(DomoticzValuesForCachingClientModel clientModel = default(DomoticzValuesForCachingClientModel), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <param name='files'>
         /// </param>
@@ -163,6 +181,16 @@ namespace Exporter.HouseDBService
         /// The cancellation token.
         /// </param>
         Task<HttpOperationResponse> SevenSegmentGetDebugCacheDatajsonGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='postGetKwhYearUsage'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> StatisticsGetKwhYearUsagePostWithHttpMessagesAsync(PostGetKwhYearUsage postGetKwhYearUsage = default(PostGetKwhYearUsage), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <param name='localPath'>
         /// </param>

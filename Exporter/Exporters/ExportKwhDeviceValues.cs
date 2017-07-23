@@ -48,7 +48,7 @@ namespace Exporter.Exporters
 		{
 			using (var client = new HttpClient())
 			{
-				var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/json.htm?type=graph&sensor=counter&idx={device.DomoticzIdx}&range=year";
+				var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/json.htm?type=graph&sensor=counter&idx={device.DomoticzKwhIdx}&range=year";
 				var response = await client.GetStringAsync(url);
 				var data = JsonConvert.DeserializeObject<dynamic>(response);
 				JArray resultList = data.result;
