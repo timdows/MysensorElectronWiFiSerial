@@ -17,13 +17,12 @@ namespace Exporter
     {
 		private HouseDBSettings _houseDBSettings;
 		private DomoticzSettings _domoticzSettings;
-		private DateTime _lastExportDatabase;
+		
 
 		public Application(HouseDBSettings houseDBSettings, DomoticzSettings domoticzSettings)
 		{
 			_houseDBSettings = houseDBSettings;
 			_domoticzSettings = domoticzSettings;
-			_lastExportDatabase = DateTime.Today.AddDays(-1);
 		}
 
 		public async Task Run()
@@ -46,6 +45,10 @@ namespace Exporter
 			}
 		}
 
+		/// <summary>
+		/// The complete energy usage
+		/// </summary>
+		/// <returns></returns>
 		private async Task ExportDomoticzP1Consumption()
 		{
 			Log.Information("Starting ExportDomoticzP1Consumption()");
@@ -62,44 +65,6 @@ namespace Exporter
 				url = $"{_houseDBSettings.Url}Exporter/InsertDomoticzP1Consumption";
 				var postBody = JsonConvert.SerializeObject(resultList);
 				await client.PostAsync(url, new StringContent(postBody, Encoding.UTF8, "application/json"));
-			}
-		}
-
-		private async Task ExportDatabase()
-		{
-			// Check if we should export
-			if (DateTime.Now.Hour == 0 && (DateTime.Now - _lastExportDatabase).Hours > 23)
-			{
-				_lastExportDatabase = DateTime.Now;
-				Log.Debug("Starting ExportDatabase");
-
-				using (var client = new HttpClient())
-				{
-					client.Timeout = TimeSpan.FromMinutes(1);
-					//var database = client.GetStreamAsync($"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php");
-
-					var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php";
-					using (var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result)
-					{
-						response.EnsureSuccessStatusCode();
-
-						using (var contentStream = await response.Content.ReadAsStreamAsync())
-						{
-							var directory = Path.Combine(Directory.GetCurrentDirectory(), "../exports");
-							var file = Path.Combine(directory, $"{DateTime.Today.ToString("yyyy-MM-ddTHH:mm")}.db");
-							Log.Debug($"Writing to file {file}");
-
-							using (var fileStream = File.Create(file))
-							using (var reader = new StreamReader(contentStream))
-							{
-								contentStream.CopyTo(fileStream);
-								fileStream.Flush();
-
-								//client.PostAsync("", fileStream);
-							}
-						}
-					}
-				}
 			}
 		}
 	}

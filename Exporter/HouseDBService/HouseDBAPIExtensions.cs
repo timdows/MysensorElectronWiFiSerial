@@ -88,52 +88,6 @@ namespace Exporter.HouseDBService
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='wattValue'>
-            /// </param>
-            public static void ExporterInsertCurrentWattValuePost(this IHouseDBAPI operations, int? wattValue = default(int?))
-            {
-                operations.ExporterInsertCurrentWattValuePostAsync(wattValue).GetAwaiter().GetResult();
-            }
-
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='wattValue'>
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task ExporterInsertCurrentWattValuePostAsync(this IHouseDBAPI operations, int? wattValue = default(int?), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.ExporterInsertCurrentWattValuePostWithHttpMessagesAsync(wattValue, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
-
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='exporterCurrentPowerValues'>
-            /// </param>
-            public static void ExporterInsertCurrentPowerValuesPost(this IHouseDBAPI operations, ExporterCurrentPowerValues exporterCurrentPowerValues = default(ExporterCurrentPowerValues))
-            {
-                operations.ExporterInsertCurrentPowerValuesPostAsync(exporterCurrentPowerValues).GetAwaiter().GetResult();
-            }
-
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='exporterCurrentPowerValues'>
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async Task ExporterInsertCurrentPowerValuesPostAsync(this IHouseDBAPI operations, ExporterCurrentPowerValues exporterCurrentPowerValues = default(ExporterCurrentPowerValues), CancellationToken cancellationToken = default(CancellationToken))
-            {
-                (await operations.ExporterInsertCurrentPowerValuesPostWithHttpMessagesAsync(exporterCurrentPowerValues, null, cancellationToken).ConfigureAwait(false)).Dispose();
-            }
-
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
             /// <param name='domoticzP1Consumptions'>
             /// </param>
             public static void ExporterInsertDomoticzP1ConsumptionPost(this IHouseDBAPI operations, IList<DomoticzP1Consumption> domoticzP1Consumptions = default(IList<DomoticzP1Consumption>))
@@ -205,7 +159,7 @@ namespace Exporter.HouseDBService
             /// </param>
             /// <param name='files'>
             /// </param>
-            public static void ExporterUploadDatabasePost(this IHouseDBAPI operations, IList<object> files = default(IList<object>))
+            public static void ExporterUploadDatabasePost(this IHouseDBAPI operations, IList<IFormFile> files = default(IList<IFormFile>))
             {
                 operations.ExporterUploadDatabasePostAsync(files).GetAwaiter().GetResult();
             }
@@ -218,7 +172,7 @@ namespace Exporter.HouseDBService
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task ExporterUploadDatabasePostAsync(this IHouseDBAPI operations, IList<object> files = default(IList<object>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task ExporterUploadDatabasePostAsync(this IHouseDBAPI operations, IList<IFormFile> files = default(IList<IFormFile>), CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.ExporterUploadDatabasePostWithHttpMessagesAsync(files, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
