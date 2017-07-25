@@ -3,7 +3,6 @@ using Exporter.HouseDBService.Models;
 using Exporter.Models.Settings;
 using Serilog;
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -22,42 +21,34 @@ namespace Exporter.Exporters
 			_lastExportDatabase = DateTime.Today.AddDays(-1);
 		}
 
-		private async Task DoExport()
+		public async Task DoExport()
 		{
 			// Check if we should export
-			if (DateTime.Now.Hour == 0 && (DateTime.Now - _lastExportDatabase).Hours > 23)
+			if ((DateTime.Now.Hour != 0 || (DateTime.Now - _lastExportDatabase).Hours > 23) && false)
 			{
-				_lastExportDatabase = DateTime.Now;
-				Log.Debug("Starting ExportDatabase");
+				return;
+			}
 
-				using (var client = new HttpClient())
+			_lastExportDatabase = DateTime.Now;
+			Log.Debug("Starting ExportDatabase");
+
+			using (var client = new HttpClient())
+			{
+				client.Timeout = TimeSpan.FromMinutes(1);
+
+				var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php";
+				using (var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result)
 				{
-					client.Timeout = TimeSpan.FromMinutes(1);
-					//var database = client.GetStreamAsync($"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php");
+					response.EnsureSuccessStatusCode();
 
-					var url = $"http://{_domoticzSettings.Host}:{_domoticzSettings.Port}/backupdatabase.php";
-					using (var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result)
+					var byteArray = await response.Content.ReadAsByteArrayAsync();
+					using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
 					{
-						response.EnsureSuccessStatusCode();
-
-						var byteArray = await response.Content.ReadAsByteArrayAsync();
-
-						//var directory = Path.Combine(Directory.GetCurrentDirectory(), "../exports");
-						//var file = Path.Combine(directory, $"{DateTime.Today.ToString("yyyy-MM-ddTHH:mm")}.db");
-						//Log.Debug($"Writing to file {file}");
-
-						//using (var fileStream = File.Create(file))
-						//using (var reader = new StreamReader(contentStream))
-						//{
-						//	contentStream.CopyTo(fileStream);
-						//	fileStream.Flush();
-
-						//	//client.PostAsync("", fileStream);
-						//	using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
-						//	{
-						//		await api.ExporterUploadDatabasePostAsync()
-						//	}
-						//}
+						await api.ExporterUploadDatabasePostAsync(new ExportFile
+						{
+							FileByteArray = byteArray,
+							DateAdded = DateTime.Now
+						});
 					}
 				}
 			}

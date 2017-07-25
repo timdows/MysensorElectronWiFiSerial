@@ -31,16 +31,16 @@ namespace Exporter
 
 			while (true)
 			{
-				//var exportDatabase = ExportDatabase();
 				var exportDomoticzP1Consumption = ExportDomoticzP1Consumption();
 				var exportKwhDeviceValues = new ExportKwhDeviceValues(_houseDBSettings, _domoticzSettings);
 				var exportValuesForCaching = new ExportValuesForCaching(_houseDBSettings, _domoticzSettings);
+				var exportDatabase = new ExportDatabase(_houseDBSettings, _domoticzSettings);
 
 				await Task.WhenAll(
-					//exportDatabase,
 					exportDomoticzP1Consumption,
 					exportKwhDeviceValues.DoExport(),
 					exportValuesForCaching.DoExport(),
+					exportDatabase.DoExport(),
 					Task.Delay(5000));
 			}
 		}

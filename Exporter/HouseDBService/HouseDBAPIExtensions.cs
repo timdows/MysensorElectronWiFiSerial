@@ -157,24 +157,24 @@ namespace Exporter.HouseDBService
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='files'>
+            /// <param name='exportFile'>
             /// </param>
-            public static void ExporterUploadDatabasePost(this IHouseDBAPI operations, IList<IFormFile> files = default(IList<IFormFile>))
+            public static void ExporterUploadDatabasePost(this IHouseDBAPI operations, ExportFile exportFile = default(ExportFile))
             {
-                operations.ExporterUploadDatabasePostAsync(files).GetAwaiter().GetResult();
+                operations.ExporterUploadDatabasePostAsync(exportFile).GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='files'>
+            /// <param name='exportFile'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task ExporterUploadDatabasePostAsync(this IHouseDBAPI operations, IList<IFormFile> files = default(IList<IFormFile>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task ExporterUploadDatabasePostAsync(this IHouseDBAPI operations, ExportFile exportFile = default(ExportFile), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.ExporterUploadDatabasePostWithHttpMessagesAsync(files, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.ExporterUploadDatabasePostWithHttpMessagesAsync(exportFile, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <param name='operations'>

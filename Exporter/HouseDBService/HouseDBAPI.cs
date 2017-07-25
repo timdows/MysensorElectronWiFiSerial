@@ -817,7 +817,7 @@ namespace Exporter.HouseDBService
             return _result;
         }
 
-        /// <param name='files'>
+        /// <param name='exportFile'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -831,7 +831,7 @@ namespace Exporter.HouseDBService
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse> ExporterUploadDatabasePostWithHttpMessagesAsync(IList<IFormFile> files = default(IList<IFormFile>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse> ExporterUploadDatabasePostWithHttpMessagesAsync(ExportFile exportFile = default(ExportFile), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -840,7 +840,7 @@ namespace Exporter.HouseDBService
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("files", files);
+                tracingParameters.Add("exportFile", exportFile);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "ExporterUploadDatabasePost", tracingParameters);
             }
@@ -869,9 +869,9 @@ namespace Exporter.HouseDBService
 
             // Serialize Request
             string _requestContent = null;
-            if(files != null)
+            if(exportFile != null)
             {
-                _requestContent = SafeJsonConvert.SerializeObject(files, SerializationSettings);
+                _requestContent = SafeJsonConvert.SerializeObject(exportFile, SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
             }
