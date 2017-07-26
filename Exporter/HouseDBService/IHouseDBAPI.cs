@@ -88,7 +88,7 @@ namespace Exporter.HouseDBService
         /// </param>
         Task<HttpOperationResponse> ExporterInsertValuesForCachingPostWithHttpMessagesAsync(DomoticzValuesForCachingClientModel clientModel = default(DomoticzValuesForCachingClientModel), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
-        /// <param name='exportFile'>
+        /// <param name='domoticzPostDatabaseFile'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -96,7 +96,7 @@ namespace Exporter.HouseDBService
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> ExporterUploadDatabasePostWithHttpMessagesAsync(ExportFile exportFile = default(ExportFile), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> ExporterUploadDatabasePostWithHttpMessagesAsync(DomoticzPostDatabaseFile domoticzPostDatabaseFile = default(DomoticzPostDatabaseFile), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <param name='customHeaders'>
         /// The headers that will be added to request.

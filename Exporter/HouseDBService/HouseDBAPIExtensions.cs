@@ -157,24 +157,24 @@ namespace Exporter.HouseDBService
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='exportFile'>
+            /// <param name='domoticzPostDatabaseFile'>
             /// </param>
-            public static void ExporterUploadDatabasePost(this IHouseDBAPI operations, ExportFile exportFile = default(ExportFile))
+            public static void ExporterUploadDatabasePost(this IHouseDBAPI operations, DomoticzPostDatabaseFile domoticzPostDatabaseFile = default(DomoticzPostDatabaseFile))
             {
-                operations.ExporterUploadDatabasePostAsync(exportFile).GetAwaiter().GetResult();
+                operations.ExporterUploadDatabasePostAsync(domoticzPostDatabaseFile).GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='exportFile'>
+            /// <param name='domoticzPostDatabaseFile'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task ExporterUploadDatabasePostAsync(this IHouseDBAPI operations, ExportFile exportFile = default(ExportFile), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task ExporterUploadDatabasePostAsync(this IHouseDBAPI operations, DomoticzPostDatabaseFile domoticzPostDatabaseFile = default(DomoticzPostDatabaseFile), CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.ExporterUploadDatabasePostWithHttpMessagesAsync(exportFile, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.ExporterUploadDatabasePostWithHttpMessagesAsync(domoticzPostDatabaseFile, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <param name='operations'>

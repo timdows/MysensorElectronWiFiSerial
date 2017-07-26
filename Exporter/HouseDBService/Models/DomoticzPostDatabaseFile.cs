@@ -21,9 +21,10 @@ namespace Exporter.HouseDBService.Models
         /// <summary>
         /// Initializes a new instance of the DomoticzPostDatabaseFile class.
         /// </summary>
-        public DomoticzPostDatabaseFile(byte[] fileByteArray = default(byte[]), string fileName = default(string))
+        public DomoticzPostDatabaseFile(byte[] byteArray = default(byte[]), System.DateTime? dateTime = default(System.DateTime?), string fileName = default(string))
         {
-            FileByteArray = fileByteArray;
+            ByteArray = byteArray;
+            DateTime = dateTime;
             FileName = fileName;
             CustomInit();
         }
@@ -35,8 +36,13 @@ namespace Exporter.HouseDBService.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "fileByteArray")]
-        public byte[] FileByteArray { get; set; }
+        [JsonProperty(PropertyName = "byteArray")]
+        public byte[] ByteArray { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "dateTime")]
+        public System.DateTime? DateTime { get; set; }
 
         /// <summary>
         /// </summary>
