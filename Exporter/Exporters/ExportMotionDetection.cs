@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -32,13 +33,13 @@ namespace Exporter.Exporters
 
 				foreach (var device in devices)
 				{
-					var clientModel = await GetMotionDetectionClientModel(device);
+					var clientModel = await GetMotionDetectionClientModel(device, true);
 					await api.ExporterInsertMotionDetectionValuesPostAsync(clientModel);
 				}
 			}
 		}
 
-		private async Task<DomoticzMotionDetectionClientModel> GetMotionDetectionClientModel(Device device)
+		private async Task<DomoticzMotionDetectionClientModel> GetMotionDetectionClientModel(Device device, bool onlyExport14Days)
 		{
 			using (var client = new HttpClient())
 			{
@@ -49,6 +50,14 @@ namespace Exporter.Exporters
 
 				// Cast resultList to objects
 				var values = resultList.ToObject<List<DomoticzMotionDetection>>();
+
+				if (onlyExport14Days)
+				{
+					var thirtyDaysAgo = DateTime.Today.AddDays(-14);
+					values = values
+						.Where(a_item => a_item.Date.Value.Date >= thirtyDaysAgo)
+						.ToList();
+				}
 
 				var clientModel = new DomoticzMotionDetectionClientModel
 				{

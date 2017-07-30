@@ -24,7 +24,7 @@ namespace Exporter.Exporters
 		public async Task DoExport()
 		{
 			// Check if we should export
-			if (DateTime.Now.Hour != 0 || (DateTime.Now - _lastExportDatabase).Hours > 23)
+			if (DateTime.Now.Hour != 0 || (DateTime.Now - _lastExportDatabase).TotalHours < 23)
 			{
 				return;
 			}

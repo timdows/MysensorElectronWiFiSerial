@@ -21,23 +21,22 @@ namespace Exporter
 		{
 			Log.Information("Starting Application.Run()");
 
-			//var exportP1Consumption = new ExportP1Consumption(_houseDBSettings, _domoticzSettings);
-			//var exportKwhDeviceValues = new ExportKwhDeviceValues(_houseDBSettings, _domoticzSettings);
-			//var exportValuesForCaching = new ExportValuesForCaching(_houseDBSettings, _domoticzSettings);
-			//var exportDatabase = new ExportDatabase(_houseDBSettings, _domoticzSettings);
+			var exportP1Consumption = new ExportP1Consumption(_houseDBSettings, _domoticzSettings);
+			var exportKwhDeviceValues = new ExportKwhDeviceValues(_houseDBSettings, _domoticzSettings);
+			var exportValuesForCaching = new ExportValuesForCaching(_houseDBSettings, _domoticzSettings);
+			var exportDatabase = new ExportDatabase(_houseDBSettings, _domoticzSettings);
 			var exportMotionDetection = new ExportMotionDetection(_houseDBSettings, _domoticzSettings);
-			await exportMotionDetection.DoExport();
 
-			//while (true)
-			//{
-			//	await Task.WhenAll(
-			//		exportP1Consumption.DoExport(),
-			//		exportKwhDeviceValues.DoExport(),
-			//		exportValuesForCaching.DoExport(),
-			//		exportDatabase.DoExport(),
-			//		exportMotionDetection.DoExport(),
-			//		Task.Delay(5000));
-			//}
+			while (true)
+			{
+				await Task.WhenAll(
+					exportP1Consumption.DoExport(),
+					exportKwhDeviceValues.DoExport(),
+					exportValuesForCaching.DoExport(),
+					exportDatabase.DoExport(),
+					exportMotionDetection.DoExport(),
+					Task.Delay(5000));
+			}
 		}
 	}
 }
