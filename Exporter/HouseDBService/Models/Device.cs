@@ -21,7 +21,7 @@ namespace Exporter.HouseDBService.Models
         /// <summary>
         /// Initializes a new instance of the Device class.
         /// </summary>
-        public Device(string name = default(string), int? dataMineChannel = default(int?), int? veraChannel = default(int?), int? domoticzKwhIdx = default(int?), int? domoticzWattIdx = default(int?), bool? isForKwhImport = default(bool?), bool? isForTemperatureImport = default(bool?), long? id = default(long?))
+        public Device(string name = default(string), int? dataMineChannel = default(int?), int? veraChannel = default(int?), int? domoticzKwhIdx = default(int?), int? domoticzWattIdx = default(int?), bool? isForKwhImport = default(bool?), bool? isForTemperatureImport = default(bool?), int? domoticzMotionDetectionIdx = default(int?), long? id = default(long?))
         {
             Name = name;
             DataMineChannel = dataMineChannel;
@@ -30,6 +30,7 @@ namespace Exporter.HouseDBService.Models
             DomoticzWattIdx = domoticzWattIdx;
             IsForKwhImport = isForKwhImport;
             IsForTemperatureImport = isForTemperatureImport;
+            DomoticzMotionDetectionIdx = domoticzMotionDetectionIdx;
             Id = id;
             CustomInit();
         }
@@ -73,6 +74,11 @@ namespace Exporter.HouseDBService.Models
         /// </summary>
         [JsonProperty(PropertyName = "isForTemperatureImport")]
         public bool? IsForTemperatureImport { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "domoticzMotionDetectionIdx")]
+        public int? DomoticzMotionDetectionIdx { get; set; }
 
         /// <summary>
         /// </summary>

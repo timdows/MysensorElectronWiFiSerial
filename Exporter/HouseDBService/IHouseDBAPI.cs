@@ -58,6 +58,14 @@ namespace Exporter.HouseDBService
         /// </param>
         Task<HttpOperationResponse<IList<Device>>> DeviceGetAllDevicesForCachingValuesGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<IList<Device>>> DeviceGetAllMotionDetectionDevicesGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
         /// <param name='domoticzP1Consumptions'>
         /// </param>
         /// <param name='customHeaders'>
@@ -88,6 +96,16 @@ namespace Exporter.HouseDBService
         /// </param>
         Task<HttpOperationResponse> ExporterInsertValuesForCachingPostWithHttpMessagesAsync(DomoticzValuesForCachingClientModel clientModel = default(DomoticzValuesForCachingClientModel), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
+        /// <param name='clientModel'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> ExporterInsertMotionDetectionValuesPostWithHttpMessagesAsync(DomoticzMotionDetectionClientModel clientModel = default(DomoticzMotionDetectionClientModel), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
         /// <param name='domoticzPostDatabaseFile'>
         /// </param>
         /// <param name='customHeaders'>
@@ -113,6 +131,14 @@ namespace Exporter.HouseDBService
         /// The cancellation token.
         /// </param>
         Task<HttpOperationResponse> HeaterGetClientModelGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse> MigrateInformationMigrateGetWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <param name='customHeaders'>
         /// The headers that will be added to request.

@@ -88,6 +88,28 @@ namespace Exporter.HouseDBService
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            public static IList<Device> DeviceGetAllMotionDetectionDevicesGet(this IHouseDBAPI operations)
+            {
+                return operations.DeviceGetAllMotionDetectionDevicesGetAsync().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<IList<Device>> DeviceGetAllMotionDetectionDevicesGetAsync(this IHouseDBAPI operations, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.DeviceGetAllMotionDetectionDevicesGetWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='domoticzP1Consumptions'>
             /// </param>
             public static void ExporterInsertDomoticzP1ConsumptionPost(this IHouseDBAPI operations, IList<DomoticzP1Consumption> domoticzP1Consumptions = default(IList<DomoticzP1Consumption>))
@@ -157,6 +179,29 @@ namespace Exporter.HouseDBService
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='clientModel'>
+            /// </param>
+            public static void ExporterInsertMotionDetectionValuesPost(this IHouseDBAPI operations, DomoticzMotionDetectionClientModel clientModel = default(DomoticzMotionDetectionClientModel))
+            {
+                operations.ExporterInsertMotionDetectionValuesPostAsync(clientModel).GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='clientModel'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task ExporterInsertMotionDetectionValuesPostAsync(this IHouseDBAPI operations, DomoticzMotionDetectionClientModel clientModel = default(DomoticzMotionDetectionClientModel), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.ExporterInsertMotionDetectionValuesPostWithHttpMessagesAsync(clientModel, null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='domoticzPostDatabaseFile'>
             /// </param>
             public static void ExporterUploadDatabasePost(this IHouseDBAPI operations, DomoticzPostDatabaseFile domoticzPostDatabaseFile = default(DomoticzPostDatabaseFile))
@@ -213,6 +258,25 @@ namespace Exporter.HouseDBService
             public static async Task HeaterGetClientModelGetAsync(this IHouseDBAPI operations, CancellationToken cancellationToken = default(CancellationToken))
             {
                 (await operations.HeaterGetClientModelGetWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false)).Dispose();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            public static void MigrateInformationMigrateGet(this IHouseDBAPI operations)
+            {
+                operations.MigrateInformationMigrateGetAsync().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task MigrateInformationMigrateGetAsync(this IHouseDBAPI operations, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                (await operations.MigrateInformationMigrateGetWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <param name='operations'>

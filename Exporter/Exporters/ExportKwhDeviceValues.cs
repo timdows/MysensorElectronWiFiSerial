@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace Exporter.Exporters
 {
+	/// <summary>
+	/// Gets all (range of a year) the kWh values for selected devices and exports them to get saved
+	/// The export contains the complete energy usage per day per device
+	/// </summary>
 	public class ExportKwhDeviceValues
     {
 		private HouseDBSettings _houseDBSettings;
