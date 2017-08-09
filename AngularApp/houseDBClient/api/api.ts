@@ -1,0 +1,17 @@
+export * from './DeviceApi';
+import { DeviceApi } from './DeviceApi';
+export * from './ExporterApi';
+import { ExporterApi } from './ExporterApi';
+export * from './HeaterApi';
+import { HeaterApi } from './HeaterApi';
+export * from './MigrateInformationApi';
+import { MigrateInformationApi } from './MigrateInformationApi';
+export * from './SettingsApi';
+import { SettingsApi } from './SettingsApi';
+export * from './SevenSegmentApi';
+import { SevenSegmentApi } from './SevenSegmentApi';
+export * from './StatisticsApi';
+import { StatisticsApi } from './StatisticsApi';
+export * from './VeraExportApi';
+import { VeraExportApi } from './VeraExportApi';
+export const APIS = [DeviceApi, ExporterApi, HeaterApi, MigrateInformationApi, SettingsApi, SevenSegmentApi, StatisticsApi, VeraExportApi];
