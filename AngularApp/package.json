@@ -24,7 +24,6 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "angular2-nvd3-aot": "^1.0.1",
-    "angular2-swagger-client-generator": "0.0.22",
     "core-js": "^2.4.1",
     "dotenv": "^4.0.0",
     "electron-reload": "^1.1.0",

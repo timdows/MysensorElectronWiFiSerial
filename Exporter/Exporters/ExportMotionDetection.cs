@@ -39,7 +39,7 @@ namespace Exporter.Exporters
 			}
 		}
 
-		private async Task<DomoticzMotionDetectionClientModel> GetMotionDetectionClientModel(Device device, bool onlyExport14Days)
+		private async Task<DomoticzMotionDetectionClientModel> GetMotionDetectionClientModel(Device device, bool onlyExportOneDay)
 		{
 			using (var client = new HttpClient())
 			{
@@ -51,9 +51,9 @@ namespace Exporter.Exporters
 				// Cast resultList to objects
 				var values = resultList.ToObject<List<DomoticzMotionDetection>>();
 
-				if (onlyExport14Days)
+				if (onlyExportOneDay)
 				{
-					var thirtyDaysAgo = DateTime.Today.AddDays(-14);
+					var thirtyDaysAgo = DateTime.Today.AddDays(-1);
 					values = values
 						.Where(a_item => a_item.Date.Value.Date >= thirtyDaysAgo)
 						.ToList();
