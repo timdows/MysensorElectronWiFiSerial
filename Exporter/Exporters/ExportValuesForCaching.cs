@@ -15,12 +15,18 @@ namespace Exporter.Exporters
 		private HouseDBSettings _houseDBSettings;
 		private DomoticzSettings _domoticzSettings;
 		private DateTime _lastExportDateTime;
+		private IList<Device> _devices;
 
 		public ExportValuesForCaching(HouseDBSettings houseDBSettings, DomoticzSettings domoticzSettings)
 		{
 			_houseDBSettings = houseDBSettings;
 			_domoticzSettings = domoticzSettings;
 			_lastExportDateTime = DateTime.Today.AddDays(-1);
+
+			using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
+			{
+				_devices = api.DeviceGetAllDevicesForCachingValuesGet();
+			}
 		}
 
 		public async Task DoExport()
@@ -29,7 +35,6 @@ namespace Exporter.Exporters
 
 			using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
 			{
-				var devices = await api.DeviceGetAllDevicesForCachingValuesGetAsync();
 				var clientModel = new DomoticzValuesForCachingClientModel
 				{
 					DateTime = DateTime.Now,
@@ -42,7 +47,7 @@ namespace Exporter.Exporters
 					clientModel.P1Values = await GetP1Values(client);
 
 					// Get the values to cache for every device
-					foreach (var device in devices)
+					foreach (var device in _devices)
 					{
 						var value = await GetDataValues(device, client);
 						clientModel.DomoticzValuesForCachingValues.Add(value);

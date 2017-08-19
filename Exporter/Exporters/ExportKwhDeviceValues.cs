@@ -20,12 +20,18 @@ namespace Exporter.Exporters
 		private HouseDBSettings _houseDBSettings;
 		private DomoticzSettings _domoticzSettings;
 		private DateTime _lastExportDateTime;
+		private IList<Device> _devices;
 
 		public ExportKwhDeviceValues(HouseDBSettings houseDBSettings, DomoticzSettings domoticzSettings)
 		{
 			_houseDBSettings = houseDBSettings;
 			_domoticzSettings = domoticzSettings;
 			_lastExportDateTime = DateTime.Today.AddDays(-1);
+
+			using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
+			{
+				_devices = api.DeviceGetAllKwhExportDevicesGet();
+			}
 		}
 
 		public async Task DoExport()
@@ -37,9 +43,7 @@ namespace Exporter.Exporters
 
 				using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
 				{
-					var devices = await api.DeviceGetAllKwhExportDevicesGetAsync();
-				
-					foreach (var device in devices)
+					foreach (var device in _devices)
 					{
 						var clientModel = await GetDomoticzKwhValuesClientModel(device);
 						await api.ExporterInsertDomoticzKwhValuesPostAsync(clientModel);

@@ -16,11 +16,17 @@ namespace Exporter.Exporters
     {
 		private HouseDBSettings _houseDBSettings;
 		private DomoticzSettings _domoticzSettings;
+		private IList<Device> _devices;
 
 		public ExportMotionDetection(HouseDBSettings houseDBSettings, DomoticzSettings domoticzSettings)
 		{
 			_houseDBSettings = houseDBSettings;
 			_domoticzSettings = domoticzSettings;
+
+			using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
+			{
+				_devices = api.DeviceGetAllMotionDetectionDevicesGet();
+			}
 		}
 
 		public async Task DoExport()
@@ -29,9 +35,7 @@ namespace Exporter.Exporters
 
 			using (var api = new HouseDBAPI(new Uri(_houseDBSettings.Url)))
 			{
-				var devices = await api.DeviceGetAllMotionDetectionDevicesGetAsync();
-
-				foreach (var device in devices)
+				foreach (var device in _devices)
 				{
 					var clientModel = await GetMotionDetectionClientModel(device, true);
 					await api.ExporterInsertMotionDetectionValuesPostAsync(clientModel);
@@ -39,7 +43,7 @@ namespace Exporter.Exporters
 			}
 		}
 
-		private async Task<DomoticzMotionDetectionClientModel> GetMotionDetectionClientModel(Device device, bool onlyExportOneDay)
+		private async Task<DomoticzMotionDetectionClientModel> GetMotionDetectionClientModel(Device device, bool onlyExportOneHour)
 		{
 			using (var client = new HttpClient())
 			{
@@ -51,11 +55,11 @@ namespace Exporter.Exporters
 				// Cast resultList to objects
 				var values = resultList.ToObject<List<DomoticzMotionDetection>>();
 
-				if (onlyExportOneDay)
+				if (onlyExportOneHour)
 				{
-					var thirtyDaysAgo = DateTime.Today.AddDays(-1);
+					var timeLimit = DateTime.Today.AddHours(-1);
 					values = values
-						.Where(a_item => a_item.Date.Value.Date >= thirtyDaysAgo)
+						.Where(a_item => a_item.Date.Value.Date >= timeLimit)
 						.ToList();
 				}
 
