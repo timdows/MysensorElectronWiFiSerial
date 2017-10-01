@@ -38,6 +38,11 @@ namespace Exporter.Exporters
 				foreach (var device in _devices)
 				{
 					var clientModel = await GetMotionDetectionClientModel(device, true);
+					if (clientModel == null)
+					{
+						continue;
+					}
+
 					await api.ExporterInsertMotionDetectionValuesPostAsync(clientModel);
 				}
 			}
@@ -51,6 +56,11 @@ namespace Exporter.Exporters
 				var response = await client.GetStringAsync(url);
 				var data = JsonConvert.DeserializeObject<dynamic>(response);
 				JArray resultList = data.result;
+
+				if (resultList == null)
+				{
+					return null;
+				}
 
 				// Cast resultList to objects
 				var values = resultList.ToObject<List<DomoticzMotionDetection>>();
